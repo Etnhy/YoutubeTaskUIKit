@@ -21,8 +21,8 @@ class MainViewController: UIViewController {
     lazy var table: UITableView = {
         var table = UITableView(frame: .zero, style: .grouped)
         table.register(HeaderTableView.self, forHeaderFooterViewReuseIdentifier: HeaderTableView.identifier)
-        table.register(FirstPlaylistCell.self, forCellReuseIdentifier: FirstPlaylistCell.identifier)
-        table.register(SecondPlaylistCell.self, forCellReuseIdentifier: SecondPlaylistCell.identifier)
+        table.register(FirstPlaylist.self, forCellReuseIdentifier: FirstPlaylist.identifier)
+        table.register(SecondPlaylist.self, forCellReuseIdentifier: SecondPlaylist.identifier)
         table.dataSource = self
         table.backgroundColor = .black
         table.delegate = self
@@ -67,11 +67,11 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         var cell: UITableViewCell?
         
         if indexPath.row % 2 == 0 {
-            cell = tableView.dequeueReusableCell(withIdentifier: FirstPlaylistCell.identifier, for: indexPath)
-            cell?.textLabel?.text = "zalupa"
+            cell = tableView.dequeueReusableCell(withIdentifier: FirstPlaylist.identifier, for: indexPath)
+            cell?.backgroundColor = .black
         } else {
-            cell = tableView.dequeueReusableCell(withIdentifier: SecondPlaylistCell.identifier, for: indexPath)
-            cell?.textLabel?.text = "zalupa2222"
+            cell = tableView.dequeueReusableCell(withIdentifier: SecondPlaylist.identifier, for: indexPath)
+            cell?.backgroundColor = .black
         }
         cell?.selectionStyle = .none
         return cell!
@@ -80,8 +80,8 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.row {
-        case 0  : return 140
-        case 1  : return 220
+        case 0  : return 200
+        case 1  : return 300
         default : return 140
         }
     }

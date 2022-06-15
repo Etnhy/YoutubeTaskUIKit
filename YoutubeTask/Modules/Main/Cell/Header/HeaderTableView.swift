@@ -9,6 +9,9 @@ import UIKit
 
 class HeaderTableView: UITableViewHeaderFooterView {
     
+    var carousalTimer: Timer?
+    var newOffsetX: CGFloat = 0.0
+
     private var currentPage = 0 {
         didSet {
             pageControl.currentPage = currentPage
@@ -22,6 +25,7 @@ class HeaderTableView: UITableViewHeaderFooterView {
         view.showsHorizontalScrollIndicator = false
         view.dataSource = self
         view.delegate = self
+        view.isPagingEnabled = true
         view.backgroundColor = .clear
         view.register(CarouselCollectionViewCell.self, forCellWithReuseIdentifier: CarouselCollectionViewCell.identifier)
         return view
@@ -39,6 +43,7 @@ class HeaderTableView: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         configureView()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -51,6 +56,8 @@ class HeaderTableView: UITableViewHeaderFooterView {
         
         addSubview(carouselView)
         addSubview(pageControl)
+//        startTimer()
+        setTimer()
         activateConstraints()
     }
     
@@ -75,6 +82,44 @@ class HeaderTableView: UITableViewHeaderFooterView {
             return visibleIndexPath.row
         }
         return currentPage
+    }
+    
+    @objc
+    fileprivate func moveToNextPage() {
+        let pageWidth: CGFloat = self.carouselView.frame.width
+        let maxWidth: CGFloat = pageWidth * 4
+        let contentOffset: CGFloat = self.carouselView.contentOffset.x
+
+        var swipeToX = contentOffset + pageWidth
+
+        if contentOffset + pageWidth == maxWidth   {
+            swipeToX = 0
+        }
+        self.carouselView.scrollRectToVisible(
+            CGRect(x: swipeToX, y: 0, width: pageWidth, height: self.carouselView.frame.height),
+                                              animated: true)
+    }
+    func startTimer() {
+            carousalTimer = Timer(fire: Date(), interval: 0.015, repeats: true) { (timer) in
+                let initailPoint = CGPoint(x: self.newOffsetX,y :0)
+                if __CGPointEqualToPoint(initailPoint, self.carouselView.contentOffset) {
+                    if self.newOffsetX < self.carouselView.contentSize.width {
+                        self.newOffsetX += 0.25
+                    }
+                    if self.newOffsetX > self.carouselView.contentSize.width - self.carouselView.frame.size.width {
+                        self.newOffsetX = 0
+                    }
+                    self.carouselView.contentOffset = CGPoint(x: self.newOffsetX,y :0)
+
+                } else {
+                    self.newOffsetX = self.carouselView.contentOffset.x
+                }
+            }
+            RunLoop.current.add(carousalTimer!, forMode: .common)
+    }
+    func setTimer() {
+        Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(moveToNextPage), userInfo: nil, repeats: true)
+
     }
 
 }

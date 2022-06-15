@@ -38,9 +38,10 @@ class CarouselCollectionViewCell: UICollectionViewCell {
         configuration.image = UIImage(named: "Play")
         configuration.cornerStyle = .capsule
         configuration.background.backgroundColor = .purple
-        
-        
+//        configuration.background.gr
+//        button.backgroundColor = .purple
         button.configuration = configuration
+        
         return button
     }()
     
@@ -57,14 +58,24 @@ class CarouselCollectionViewCell: UICollectionViewCell {
     
     func addSubviews() {
         self.layer.cornerRadius = 8
-        
+
         addSubview(bannerImage)
         addSubview(albumName)
         addSubview(subscribersCount)
         addSubview(playButton)
+//        setupGradientButton()
+
         activateConstraints()
     }
     
+//    private func setupGradientButton() {
+//        let gradientLayer: CAGradientLayer = CAGradientLayer()
+//        gradientLayer.frame.size = playButton.frame.size
+//        gradientLayer.colors = [UIColor.buttonGradientStart().cgColor,
+//                                UIColor.buttonGradientEnd().cgColor]
+//        playButton.layer.addSublayer(gradientLayer)
+//        self.addSubview(playButton)
+//    }
     
     func activateConstraints() {
         bannerImage.snp.makeConstraints { make in
