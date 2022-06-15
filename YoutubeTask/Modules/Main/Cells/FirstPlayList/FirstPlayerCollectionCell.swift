@@ -48,6 +48,10 @@ class FirstPlayerCollectionCell: UICollectionViewCell {
         activateConstraints()
     }
     
+    func configure(with model: FirstCellModel) {
+        self.nameLabel.text = model.title
+    }
+    
     func activateConstraints() {
         firstPlaylistImage.snp.makeConstraints { make in
             make.leading.trailing.equalTo(self)

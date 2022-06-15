@@ -118,7 +118,7 @@ class HeaderTableView: UITableViewHeaderFooterView {
             RunLoop.current.add(carousalTimer!, forMode: .common)
     }
     func setTimer() {
-        Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(moveToNextPage), userInfo: nil, repeats: true)
+        Timer.scheduledTimer(timeInterval: 6, target: self, selector: #selector(moveToNextPage), userInfo: nil, repeats: true)
 
     }
 

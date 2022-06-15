@@ -52,10 +52,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     
 }
+//        let player = PlayerViewController()
 
 extension SceneDelegate {
     func setRootViewController() {
         let main = MainViewController()
+        let networkManager = NetworkManager()
+        let presenter = MainPresenter(view: main, networkManager: networkManager)
+        main.presenter = presenter
         let nav = UINavigationController(rootViewController: main)
         guard let window = window else { return }
         

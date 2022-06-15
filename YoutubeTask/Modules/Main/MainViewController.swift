@@ -7,8 +7,12 @@
 
 import UIKit
 import SnapKit
+import YoutubeDataKit
 
 class MainViewController: UIViewController {
+    
+    var presenter: MainPlaylistViewPresenterProtocol?
+//    var secondPresenter
     
     let mainTitle: UILabel = {
         var title = UILabel()
@@ -34,12 +38,28 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         view.backgroundColor = .black
+        testAPI()
         addSubviews()
+//        presenter?.set()
+    }
+    
+    
+    private func testAPI() {
+        NetworkManager.shared.getYoutubePlaylist { result in
+            switch result {
+            case .success(let response):
+                print( response.items )
+            case .failure(let error):
+                print( error )
+            }
+
+        }
     }
     
     fileprivate func addSubviews() {
         view.addSubview(mainTitle)
         view.addSubview(table)
+        
         activateConstraints()
     }
     fileprivate func activateConstraints() {
@@ -51,7 +71,7 @@ class MainViewController: UIViewController {
         table.snp.makeConstraints { make in
             make.top.equalTo(mainTitle.snp.bottom).offset(20)
             make.leading.trailing.equalTo(view)
-            make.bottom.equalTo(view.snp.bottom).offset(30)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
@@ -97,28 +117,15 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 
-
-
-
-
-
-
-import SwiftUI
-
-struct ViewControllerProvider: PreviewProvider {
-    static var previews: some View {
-        ContainerView().edgesIgnoringSafeArea(.all)
+extension MainViewController: MainPlaylistProtocol {
+    
+    func succes() {
+        ///
     }
     
-    struct ContainerView: UIViewControllerRepresentable {
-        
-        let viewControlle = MainViewController()
-        
-        func makeUIViewController(context: Context) -> some UIViewController {
-            return viewControlle
-        }
-        func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        }
+    func failure() {
+        ///
     }
+    
     
 }
