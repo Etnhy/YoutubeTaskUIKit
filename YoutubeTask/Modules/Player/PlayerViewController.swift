@@ -10,6 +10,7 @@ import UIKit
 class PlayerViewController: UIViewController {
     
     let buttonName = ["Prev","Pause","Next"]
+
     
     lazy var playerView: UIView = {
        var view = UIView()

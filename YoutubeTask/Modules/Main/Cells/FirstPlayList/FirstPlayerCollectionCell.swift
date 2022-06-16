@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AlamofireImage
 
 class FirstPlayerCollectionCell: UICollectionViewCell {
     
@@ -13,7 +14,7 @@ class FirstPlayerCollectionCell: UICollectionViewCell {
     
     let firstPlaylistImage: UIImageView = {
         var view = UIImageView()
-        view.image = UIImage(named: "recc.png")
+        view.image = UIImage(named: "ttew.png")
         view.layer.cornerRadius = 8
         view.contentMode = .scaleAspectFill
         return view
@@ -21,9 +22,11 @@ class FirstPlayerCollectionCell: UICollectionViewCell {
     
     let nameLabel: UILabel = {
         var label = UILabel()
-        label.text = "Meteora"
+        label.text = "Meteora MeteoraMeteora"
         label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         label.textColor = .white
+        label.minimumScaleFactor = 0.1
+        label.adjustsFontSizeToFitWidth = true
 
         return label
     }()
@@ -42,6 +45,7 @@ class FirstPlayerCollectionCell: UICollectionViewCell {
     }
     
     func setupView() {
+        self.layer.cornerRadius = 8
         addSubview(firstPlaylistImage)
         addSubview(nameLabel)
         addSubview(viewsCount)
@@ -50,6 +54,12 @@ class FirstPlayerCollectionCell: UICollectionViewCell {
     
     func configure(with model: FirstCellModel) {
         self.nameLabel.text = model.title
+        guard let urlImg = URL(string: model.image) else { return }
+        self.firstPlaylistImage.af.setImage(withURL: urlImg)
+    }
+    
+    func setViews(views: ViewsModel) {
+        self.viewsCount.text = views.view
     }
     
     func activateConstraints() {
@@ -61,10 +71,14 @@ class FirstPlayerCollectionCell: UICollectionViewCell {
         nameLabel.snp.makeConstraints { make in
             make.top.equalTo(firstPlaylistImage.snp.bottom).offset(18)
             make.leading.equalTo(self)
+            make.trailing.equalTo(self)
+
         }
         viewsCount.snp.makeConstraints { make in
             make.top.equalTo(nameLabel.snp.bottom).offset(8)
             make.leading.equalTo(self)
+            make.trailing.equalTo(self)
+
         }
     }
     

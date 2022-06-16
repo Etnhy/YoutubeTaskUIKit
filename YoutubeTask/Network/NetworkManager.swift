@@ -9,7 +9,8 @@ import UIKit
 import Alamofire
 
 protocol NetworkLayerProtocol {
-    func getYoutubePlaylist( completion: @escaping (Result<Welcome, AFError>) -> ())
+    func getYoutubePlaylist(playlistNumber: String,completion: @escaping (Result<Welcome, AFError>) -> ())
+    func getViewsVideos(videoId: String,completion: @escaping (Result<YoutubeVideoResponse,AFError>) ->())
 }
 
 class NetworkManager {
@@ -22,11 +23,19 @@ class NetworkManager {
     fileprivate let secondPlaylist = Configuration.Playlists.second
     
     
-    func getYoutubePlaylist(completion: @escaping (Result<Welcome, AFError>) -> ()) {
-        let url = "\(apiUrl)playlistItems?playlistId=\(firstPlayList)&maxResults=10&part=snippet%2CcontentDetails&key=\(apiKey)"
-
+    func getYoutubePlaylist(playlistNumber: String ,completion: @escaping (Result<Welcome, AFError>) -> ()) {
+        let url = "\(apiUrl)playlistItems?playlistId=\(playlistNumber)&maxResults=10&part=snippet%2CcontentDetails&key=\(apiKey)"
+        downloadJson(url: url, completion: completion)
+        // https://www.googleapis.com/youtube/v3/videos?part=statistics&id=h0ayziqKM9U&key=AIzaSyAvUBNHFqFgOKKUzN152a1z5bMkxW5wzwc
+    }
+    
+    func getViewsVideos(videoId: String,completion: @escaping (Result<YoutubeVideoResponse,AFError>) ->()) {
+        let url = "\(apiUrl)videos?part=statistics&id=\(videoId)&key=\(apiKey)"
         downloadJson(url: url, completion: completion)
     }
+    
+    
+    
     
     fileprivate func downloadJson<T:Decodable>(url: String, completion:@escaping(Result<T,AFError>)-> Void) {
         AF.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: nil, interceptor: nil, requestModifier: {
@@ -41,9 +50,12 @@ class NetworkManager {
             }
         }
     }
-
-    
-    
-    
     
 }
+// MARK: - channels
+//   'https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id=UCpOrC2F6a6SswsBxGT0bJaA&id=UCf-M7ZMAeru8ubUHWQsxiVQ&id=UCnQHLFKsCRzyYTLJgA3Ud8Q&id=UCIgA09xiZmp-xxrcf_tFEVw&key=AIzaSyAvUBNHFqFgOKKUzN152a1z5bMkxW5wzwc
+
+
+//https://www.googleapis.com/youtube/v3/playlistItems?playlistId=PLNZta_SFvNjFecxGDwyektG2-3LdgnhbD&maxResults=10&part=snippet%2CcontentDetails&key=AIzaSyAvUBNHFqFgOKKUzN152a1z5bMkxW5wzwc
+
+//https://www.googleapis.com/youtube/v3/playlistItems?playlistId=PLNZta_SFvNjFecxGDwyektG2-3LdgnhbD&maxResults=10&part=snippet%2CcontentDetails&key=AIzaSyAvUBNHFqFgOKKUzN152a1z5bMkxW5wzwc

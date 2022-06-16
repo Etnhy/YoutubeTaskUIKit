@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AlamofireImage
 
 class SecondPlayerCollectionCell: UICollectionViewCell {
     static let idenrifier = "SecondPlayerCollectionCell"
@@ -13,7 +14,7 @@ class SecondPlayerCollectionCell: UICollectionViewCell {
     
     let secondPlaylistImage: UIImageView = {
         var view = UIImageView()
-        view.image = UIImage(named: "recc.png")
+        view.image = UIImage(named: "ttew.png")
         view.layer.cornerRadius = 8
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
@@ -22,10 +23,11 @@ class SecondPlayerCollectionCell: UICollectionViewCell {
     
     let nameLabel: UILabel = {
         var label = UILabel()
-        label.text = "Meteora"
         label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         label.textColor = .white
-
+        label.minimumScaleFactor = 0.1
+        label.adjustsFontSizeToFitWidth = true
+        label.text = "Eternal rest two trwo tw"
         return label
     }()
     
@@ -34,12 +36,22 @@ class SecondPlayerCollectionCell: UICollectionViewCell {
         label.text = "1 848 894 просмотра"
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.textColor = .gray
+        label.minimumScaleFactor = 0.1
+        label.adjustsFontSizeToFitWidth = true
+
+        
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
+    }
+    
+    func configure(with model: SecondCellModel) {
+        self.nameLabel.text = model.title
+        guard let urlImg = URL(string: model.image) else { return }
+        self.secondPlaylistImage.af.setImage(withURL: urlImg)
     }
     
     func setupView() {
@@ -49,6 +61,7 @@ class SecondPlayerCollectionCell: UICollectionViewCell {
         addSubview(viewsCount)
         activateConstraints()
     }
+    
     
     func activateConstraints() {
 
@@ -60,10 +73,14 @@ class SecondPlayerCollectionCell: UICollectionViewCell {
         nameLabel.snp.makeConstraints { make in
             make.top.equalTo(secondPlaylistImage.snp.bottom).offset(8)
             make.leading.equalTo(self)
+            make.trailing.equalTo(self)
+
         }
         viewsCount.snp.makeConstraints { make in
             make.top.equalTo(nameLabel.snp.bottom).offset(8)
             make.leading.equalTo(self)
+            make.trailing.equalTo(self)
+
         }
     }
 

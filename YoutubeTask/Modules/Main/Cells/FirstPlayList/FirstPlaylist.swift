@@ -11,6 +11,11 @@ class FirstPlaylist: UITableViewCell {
 
     static let identifier = "FirstPlaylist"
     
+    var model = [FirstCellModel]()
+    
+    var viewsCont = [ViewsModel]()
+    var presenter: MainPlaylistViewPresenterProtocol?
+    
     let firstPlaylistName: UILabel = {
         var name = UILabel()
         name.text = "FirstPlaylist name"
@@ -39,8 +44,14 @@ class FirstPlaylist: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
-        
+        setupView()
         addSubviews()
+    }
+    
+    func setupView() {
+        let network = NetworkManager()
+        self.presenter = MainPresenter(view: self, networkManager: network)
+
     }
     func addSubviews() {
         self.addSubview(firstPlaylistCollectionView)
@@ -72,6 +83,8 @@ extension FirstPlaylist: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FirstPlayerCollectionCell.identifier, for: indexPath) as? FirstPlayerCollectionCell else {
             return UICollectionViewCell()
         }
+//        cell.configure(with: model[indexPath.row])
+//        cell.setViews(views: viewsCont[indexPath.row])
         cell.backgroundColor = .clear
         return cell
     }
@@ -83,4 +96,26 @@ extension FirstPlaylist: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 180, height: 130)
     }
+}
+extension FirstPlaylist: MainPlaylistProtocol {
+    func setSecondPlaylist(model: [SecondCellModel]) {
+        ///
+    }
+    
+    func setFirsViews(count views: [ViewsModel]) {
+        self.viewsCont = views
+    }
+    
+
+    
+    func setFirstPlaylist(model: [FirstCellModel]) {
+        self.model = model
+        self.firstPlaylistCollectionView.reloadData()
+    }
+    
+    func failure() {
+        ///
+    }
+    
+    
 }
