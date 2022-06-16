@@ -6,15 +6,32 @@
 //
 
 import UIKit
+import youtube_ios_player_helper
 
 class PlayerViewController: UIViewController {
-    
-    let buttonName = ["Prev","Pause","Next"]
+
+    let buttonName = ["Prev","Play","Next"]
+    var playerIsVisible: Bool = true
+    var playVideos: Bool = false
 
     
-    lazy var playerView: UIView = {
-       var view = UIView()
+    lazy var showViewButton: UIButton = {
+        var button = UIButton(type: .system)
+        var config = UIButton.Configuration.plain()
+        config.image = UIImage(named: "Close_Open")?.rotated(byDegrees: 180)
+        button.configuration = config
+        button.addTarget(self, action: #selector(imageChanger), for: .touchUpInside)
+        button.layer.cornerRadius = 18
+        button.clipsToBounds = true
+        return button
+    }()
+    
+    lazy var playerView: YTPlayerView = {
+       var view = YTPlayerView()
+//        view.load(withVideoId: "GJzUu8ZjsCA")
+        view.load(withPlaylistId: Configuration.Playlists.first)
         view.backgroundColor = .black
+//        view.
         
         return view
     }()
@@ -23,7 +40,7 @@ class PlayerViewController: UIViewController {
         var progress = UIProgressView()
         progress.progressViewStyle = .default
         
-        progress.setProgress(0.1, animated: true)
+        progress.setProgress(0.0, animated: true)
         progress.progressTintColor = .white
         progress.trackTintColor = .gray
         return progress
@@ -48,7 +65,6 @@ class PlayerViewController: UIViewController {
     
     lazy var playerButtons: [UIButton] = {
         var buttons: [UIButton] = []
-//        buttonName.forEach { name in
             for (index, buttName) in buttonName.enumerated() {
             var button = UIButton(type: .system)
             var config = UIButton.Configuration.plain()
@@ -70,45 +86,88 @@ class PlayerViewController: UIViewController {
         return stack
     }()
     
-    let volumeSlider: UISlider = {
+    lazy var volumeSlider: UISlider = {
        var slider = UISlider()
         slider.thumbTintColor = .white
         slider.maximumTrackTintColor = .gray.withAlphaComponent(0.7)
         slider.tintColor = .white
+        slider.addTarget(self, action: #selector(changeVolume(_:)), for: .valueChanged)
+        slider.minimumValue = 0.0
+        slider.maximumValue = 100.0
         return slider
     }()
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
+        setProgress()
     }
     
+    func setProgress() {
+        playerView.currentTime { progress, error in
+            self.progressView.progress = progress
+            print(progress)
+        }
+    }
     fileprivate func configureView() {
-//        view.backgroundColor = .systemPink
-        setGradiend()
+        self.view.layer.cornerRadius = 18
+        self.view.clipsToBounds = true
+        view.addSubview(showViewButton)
         view.addSubview(progressView)
         view.addSubview(playerView)
         view.addSubview(videoName)
         view.addSubview(viewsCount)
         view.addSubview(buttonStackView)
         view.addSubview(volumeSlider)
-        
+        view.addGradient(colors: [UIColor.buttonGradientStart(), UIColor.buttonGradientEnd()])
         activateConstraints()
     }
     @objc func buttonPlayerActions(_ sender: UIButton) {
         switch sender.tag {
-        case 0: print("back")
-        case 1: print("pause")
-        case 2: print("next")
+        case 0:
+//            playerView.pl
+            playerView.previousVideo()
+        case 1:
+            playVideos.toggle()
+
+            var config = UIButton.Configuration.plain()
+            config.image = playVideos ? UIImage(named: "Pause") : UIImage(named: "Play")
+            playerButtons[1].configuration = config
+            if playVideos {
+                playerView.playVideo()
+            } else {
+                playerView.pauseVideo()
+            }
+        case 2:
+            playerView.nextVideo()
         default: break
         }
     }
+    
+    @objc func imageChanger() {
+        playerIsVisible.toggle()
+        var config = UIButton.Configuration.plain()
+        config.image = playerIsVisible ? UIImage(named: "Close_Open")?.rotated(byDegrees: 180) : UIImage(named: "Close_Open")
+        
+        showViewButton.configuration = config
+    }
+    @objc func changeVolume(_ sender: UISlider) {
+        
+    }
     fileprivate func activateConstraints() {
+
+        showViewButton.snp.makeConstraints { make in
+            make.top.equalTo(view).offset(6)
+            make.leading.trailing.equalTo(view)
+            make.height.equalTo(40)
+        }
+        
         playerView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+            make.top.equalTo(showViewButton.snp.bottom).offset(8)
             make.leading.equalTo(view).offset(4)
             make.trailing.equalTo(view).offset(-4)
-            make.height.equalTo(260)
+            make.height.equalTo(240)
         }
         progressView.snp.makeConstraints { make in
             make.top.equalTo(playerView.snp.bottom).offset(16)
@@ -127,58 +186,16 @@ class PlayerViewController: UIViewController {
             make.centerX.equalTo(videoName)
         }
         buttonStackView.snp.makeConstraints { make in
-            make.top.equalTo(viewsCount.snp.bottom).offset(50)
+            make.top.equalTo(viewsCount.snp.bottom).offset(30)
             make.leading.equalTo(view).offset(74)
             make.trailing.equalTo(view).offset(-74)
             make.height.equalTo(64)
         }
         volumeSlider.snp.makeConstraints { make in
-            make.top.equalTo(buttonStackView.snp.bottom).offset(80)
+            make.top.equalTo(buttonStackView.snp.bottom).offset(20)
             make.leading.equalTo(30)
             make.trailing.equalTo(-30)
             make.height.equalTo(15)
         }
     }
-
-}
-
-extension PlayerViewController {
-    func setGradiend() {
-        let startPointX: CGFloat = 1
-        let startPointY: CGFloat = 0
-        
-        let endPointX: CGFloat = 0
-        let endPointY: CGFloat = 1
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [UIColor.buttonGradientStart().cgColor, UIColor.buttonGradientEnd().cgColor]
-        gradientLayer.startPoint = CGPoint(x: startPointX, y: startPointY)
-        gradientLayer.endPoint   = CGPoint(x: endPointX, y: endPointY)
-        gradientLayer.frame = self.view.bounds
-        self.view.layer.addSublayer(gradientLayer)
-    }
-}
-
-
-
-
-
-
-import SwiftUI
-
-struct ViewControllerProvider: PreviewProvider {
-    static var previews: some View {
-        ContainerView().edgesIgnoringSafeArea(.all)
-    }
-    
-    struct ContainerView: UIViewControllerRepresentable {
-        
-        let viewControlle = PlayerViewController()
-        
-        func makeUIViewController(context: Context) -> some UIViewController {
-            return viewControlle
-        }
-        func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-        }
-    }
-    
 }

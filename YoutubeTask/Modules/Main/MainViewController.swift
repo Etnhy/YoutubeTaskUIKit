@@ -11,10 +11,11 @@ import YoutubeDataKit
 
 class MainViewController: UIViewController {
     
-//    var presenter: MainPlaylistViewPresenterProtocol?
     var model = [FirstCellModel]()
 
     var playerIsVisible: Bool = false
+    let playerVC = PlayerViewController()
+    
     
     let mainTitle: UILabel = {
         var title = UILabel()
@@ -36,49 +37,37 @@ class MainViewController: UIViewController {
         return table
     }()
     
-    lazy var playerView: PlayerView = {
-       var view = PlayerView()
-        view.backgroundColor = .systemPink
-        view.showViewButton.addTarget(self, action: #selector(changePlayerPostion(_:)), for: .touchUpInside)
-        return view
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
         addSubviews()
     }
-
-//    override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//
-////        if playerIsVisible {
-////            playerView.snp.updateConstraints { make in
-////                make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
-////                make.leading.trailing.equalTo(view)
-////                make.bottom.equalTo(view.snp.bottom)
-////            }
-////        } else {
-////            playerView.snp.makeConstraints { make in
-////                make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
-////                make.leading.equalTo(view).offset(3)
-////                make.trailing.equalTo(view).offset(-3)
-////
-////                make.leading.trailing.equalTo(view)
-////                make.bottom.equalTo(view.snp.bottom).offset(540)
-////            }
-////        }
-//    }
     
     
     fileprivate func addSubviews() {
         view.addSubview(mainTitle)
         view.addSubview(table)
-        view.addSubview(playerView)
+        addPlayerVC()
+        
+        
         activateConstraints()
+    }
+    
+    func addPlayerVC() {
+        addChild(playerVC)
+        view.addSubview(playerVC.view)
+        playerVC.didMove(toParent: self)
+        playerVC.showViewButton.addTarget(self, action: #selector(changePlayerPostion(_:)), for: .touchUpInside)
+
     }
     fileprivate func activateConstraints() {
         
+        playerVC.view.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
+            make.leading.trailing.equalTo(view)
+            make.bottom.equalTo(view.snp.bottom).offset(550)
+
+        }
         mainTitle.snp.makeConstraints { make in
             make.top.equalTo(view).offset(50)
             make.leading.equalTo(view).offset(20)
@@ -89,17 +78,12 @@ class MainViewController: UIViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
 
-        playerView.snp.makeConstraints { make in
-            make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
-            make.leading.trailing.equalTo(view)
-            make.bottom.equalTo(view.snp.bottom).offset(540)
-        }
     }
     @objc
     fileprivate func changePlayerPostion(_ sender: UIButton) {
         playerIsVisible.toggle()
         UIView.animate(withDuration: 0.7) {
-            self.playerView.snp.updateConstraints { make in
+            self.playerVC.view.snp.updateConstraints { make in
                 make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
                 make.leading.trailing.equalTo(self.view)
                 make.bottom.equalTo(self.view.snp.bottom).offset(self.playerIsVisible ? 0 : 540)
@@ -107,6 +91,7 @@ class MainViewController: UIViewController {
             self.view.layoutIfNeeded()
         }
     }
+    
 }
 
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
@@ -147,25 +132,3 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
 }
-
-
-
-//import SwiftUI
-//
-//struct ViewControllerProvider: PreviewProvider {
-//    static var previews: some View {
-//        ContainerView().edgesIgnoringSafeArea(.all)
-//    }
-//    
-//    struct ContainerView: UIViewControllerRepresentable {
-//        
-//        let viewControlle = MainViewController()
-//        
-//        func makeUIViewController(context: Context) -> some UIViewController {
-//            return viewControlle
-//        }
-//        func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {
-//        }
-//    }
-//    
-//}

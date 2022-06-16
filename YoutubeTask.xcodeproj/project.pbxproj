@@ -12,6 +12,7 @@
 		603B28B12858F71600ADE45D /* FirstPlaylist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603B28B02858F71600ADE45D /* FirstPlaylist.swift */; };
 		603B28B42858F92000ADE45D /* SecondPlaylist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603B28B32858F92000ADE45D /* SecondPlaylist.swift */; };
 		603E46A8285BBD3500563C0E /* YoutubeChannelsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603E46A7285BBD3500563C0E /* YoutubeChannelsModel.swift */; };
+		603E46AA285BD04A00563C0E /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603E46A9285BD04A00563C0E /* UIView+Extension.swift */; };
 		605C6098285B404A004DA484 /* YoutubeVideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605C6097285B404A004DA484 /* YoutubeVideoModel.swift */; };
 		605C609A285B42EA004DA484 /* FirstCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605C6099285B42EA004DA484 /* FirstCellModel.swift */; };
 		60A00A5C285904AB00B43FFA /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A00A5B285904AB00B43FFA /* UIColor+Extension.swift */; };
@@ -41,6 +42,7 @@
 		603B28B02858F71600ADE45D /* FirstPlaylist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstPlaylist.swift; sourceTree = "<group>"; };
 		603B28B32858F92000ADE45D /* SecondPlaylist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondPlaylist.swift; sourceTree = "<group>"; };
 		603E46A7285BBD3500563C0E /* YoutubeChannelsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeChannelsModel.swift; sourceTree = "<group>"; };
+		603E46A9285BD04A00563C0E /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		605C6097285B404A004DA484 /* YoutubeVideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeVideoModel.swift; sourceTree = "<group>"; };
 		605C6099285B42EA004DA484 /* FirstCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstCellModel.swift; sourceTree = "<group>"; };
 		60A00A5B285904AB00B43FFA /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 			children = (
 				60A00A5B285904AB00B43FFA /* UIColor+Extension.swift */,
 				60F48B2A285B5F8D00E6DA48 /* UIImage+Extension.swift */,
+				603E46A9285BD04A00563C0E /* UIView+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -364,6 +367,7 @@
 				60B2D6E128589DDE000A9D43 /* AppDelegate.swift in Sources */,
 				60F48B2B285B5F8D00E6DA48 /* UIImage+Extension.swift in Sources */,
 				60B562EB285A14C500215FE0 /* NetworkManager.swift in Sources */,
+				603E46AA285BD04A00563C0E /* UIView+Extension.swift in Sources */,
 				60B2D6FE2858B384000A9D43 /* HeaderTableView.swift in Sources */,
 				605C6098285B404A004DA484 /* YoutubeVideoModel.swift in Sources */,
 				60B2D6E328589DDE000A9D43 /* SceneDelegate.swift in Sources */,
