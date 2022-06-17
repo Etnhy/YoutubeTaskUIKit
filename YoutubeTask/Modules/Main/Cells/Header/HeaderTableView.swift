@@ -12,6 +12,7 @@ class HeaderTableView: UITableViewHeaderFooterView {
     var carousalTimer: Timer?
     var newOffsetX: CGFloat = 0.0
     
+    let network = NetworkManager()
     var headerModel = [HeaderModel]()
     var presenter: MainPlaylistViewPresenterProtocol?
 
@@ -55,10 +56,7 @@ class HeaderTableView: UITableViewHeaderFooterView {
     }
     
     fileprivate func configureView() {
-        let network = NetworkManager()
-        
-        self.presenter? = MainPresenter(view: self, networkManager: network)
-        
+        self.presenter = MainPresenter(view: self, networkManager: network)
         self.heightAnchor.constraint(equalToConstant: 250).isActive = true
         self.layer.cornerRadius = 8
         
@@ -170,6 +168,15 @@ extension HeaderTableView: UICollectionViewDelegateFlowLayout {
 
 
 extension HeaderTableView: MainPlaylistProtocol {
+
+
+    func setHeader(model: [HeaderModel]) {
+        self.headerModel = model
+        self.carouselView.reloadData()
+    }
+    
+    
+    
     func setFirstPlaylist(model: [FirstCellModel]) {
         ///
     }
@@ -185,13 +192,5 @@ extension HeaderTableView: MainPlaylistProtocol {
     func failure() {
         ///
     }
-    
-
-    func setHeader(model: [HeaderModel]) {
-        self.headerModel = model
-        self.carouselView.reloadData()
-    }
-
-    
     
 }

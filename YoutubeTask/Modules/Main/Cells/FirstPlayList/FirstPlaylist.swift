@@ -56,7 +56,7 @@ class FirstPlaylist: UITableViewCell {
     
     func setupView() {
         let network = NetworkManager()
-//        self.presenter = MainPresenter(view: self, networkManager: network)
+        self.presenter = MainPresenter(view: self, networkManager: network)
 
     }
     func addSubviews() {
@@ -82,14 +82,14 @@ class FirstPlaylist: UITableViewCell {
 extension FirstPlaylist: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return model.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FirstPlayerCollectionCell.identifier, for: indexPath) as? FirstPlayerCollectionCell else {
             return UICollectionViewCell()
         }
-//        cell.configure(with: model[indexPath.row])
+        cell.configure(with: model[indexPath.row])
 //        cell.setViews(views: viewsCont[indexPath.row])
         cell.backgroundColor = .clear
         return cell
@@ -108,29 +108,25 @@ extension FirstPlaylist: UICollectionViewDelegateFlowLayout {
         return CGSize(width: 180, height: 130)
     }
 }
-//extension FirstPlaylist: MainPlaylistProtocol {
-//    func setHeader(model: [HeaderModel]) {
-//        ///
-//    }
-//    
-//    func setSecondPlaylist(model: [SecondCellModel]) {
-//        ///
-//    }
-//    
-//    func setFirsViews(count views: [ViewsModel]) {
-//        self.viewsCont = views
-//    }
-//    
-//
-//    
-//    func setFirstPlaylist(model: [FirstCellModel]) {
-//        self.model = model
-//        self.firstPlaylistCollectionView.reloadData()
-//    }
-//    
-//    func failure() {
-//        ///
-//    }
-//    
-//    
-//}
+extension FirstPlaylist: MainPlaylistProtocol {
+    
+    func setFirsViews(count views: [ViewsModel]) {
+        self.viewsCont = views
+    }
+
+    func setFirstPlaylist(model: [FirstCellModel]) {
+        self.model = model
+        self.firstPlaylistCollectionView.reloadData()
+    }
+    
+    func setHeader(model: [HeaderModel]) {
+        ///
+    }
+    
+    func setSecondPlaylist(model: [SecondCellModel]) {
+        ///
+    }
+    func failure() {
+        ///
+    }
+}

@@ -7,22 +7,6 @@
 
 import Foundation
 
-//// MARK: - header playlist protocol
-//protocol HeaderPlaylistProtocl: AnyObject {
-//    func setHeader(model: [HeaderModel])
-//
-//}
-//
-//// MARK: - first playlist protocol
-//protocol FirstPlaylistProtocol: AnyObject {
-//    func setFirstPlaylist(model: [FirstCellModel])
-//    func setFirsViews(count views: [ViewsModel])
-//}
-//// MARK: - second playlist protocol
-//protocol SecondPlaylostProtocol: AnyObject {
-//    func setSecondPlaylist(model: [SecondCellModel])
-//}
-
 protocol MainPlaylistProtocol: AnyObject {
     func setHeader(model: [HeaderModel])
     func setFirstPlaylist(model: [FirstCellModel])
@@ -39,15 +23,21 @@ protocol MainPlaylistProtocol: AnyObject {
 protocol MainPlaylistViewPresenterProtocol: AnyObject {
     init(view: MainPlaylistProtocol, networkManager: NetworkManager)
     var welcome: [Items]? { get set }
-    func setFirst()
-    func setFirstViews()
     
     func setChannels()
     
+    func setFirst()
+    func setFirstViews()
+    
     func setSecond()
+    func setSecondViews()
+    func fetchGroup()
 }
 
 class MainPresenter: MainPlaylistViewPresenterProtocol {
+
+
+    
 
     var headerModel = [HeaderModel]()
     var firstModel  = [FirstCellModel]()
@@ -67,10 +57,33 @@ class MainPresenter: MainPlaylistViewPresenterProtocol {
         self.networkManager = networkManager
 //        setFirst()
 //        setChannels()
+        fetchGroup()
     }
     
+    // MARK: - fetch group
+    func fetchGroup() {
+        let group = DispatchGroup()
+        
+        group.enter()
+        setChannels()
+        group.leave()
+        
+        group.enter()
+        setFirst()
+        group.leave()
+        
+        group.enter()
+        setSecond()
+        group.leave()
+        
+        group.notify(queue: .main) {
+            print("loading is done")
+        }
+        
+    }
     
     func setChannels() {
+        print("channels")
         networkManager.getChannels { [weak self] result in
             switch result {
             case .success(let channels):
@@ -87,6 +100,7 @@ class MainPresenter: MainPlaylistViewPresenterProtocol {
     
     
     func setFirst() {
+        print("setfirst")
         DispatchQueue.main.async {
             self.networkManager.getYoutubePlaylist(playlistNumber: Configuration.Playlists.first) { [weak self] result in
                 switch result {
@@ -100,13 +114,15 @@ class MainPresenter: MainPlaylistViewPresenterProtocol {
                     print(error)
                 }
                 self?.setFirstViews()
-                
+
             }
 
         }
+        setFirstViews()
     }
     
     func setFirstViews() {
+        print("first views")
 //        for i in self.welcome {
 //            networkManager.getViewsVideos(videoId: i.snippet.resourceId.videoId ) { [weak self] video in
 //                switch video {
@@ -118,9 +134,10 @@ class MainPresenter: MainPlaylistViewPresenterProtocol {
 //                }
 //            }
 //        }
-        setSecond()
+//        setSecond()
     }
     func setSecond() {
+        print("setSecond")
         DispatchQueue.main.async {
             self.networkManager.getYoutubePlaylist(playlistNumber: Configuration.Playlists.second) { [weak self] result in
                 switch result {
@@ -129,16 +146,18 @@ class MainPresenter: MainPlaylistViewPresenterProtocol {
                     let model = self?.welcome?.compactMap({
                         SecondCellModel(title: $0.snippet.title, image: $0.snippet.thumbnails.medium.url)
                     })
-    //                print(model)
                     self?.view?.setSecondPlaylist(model: model!)
                 case .failure(let error):
                     print(error)
                 }
                 self?.setFirstViews()
             }
-
         }
-
+        setFirstViews()
     }
+    func setSecondViews() {
+        print("second views")
+    }
+    
 }
 
