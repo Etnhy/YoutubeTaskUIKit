@@ -12,9 +12,9 @@ import YoutubeDataKit
 class MainViewController: UIViewController {
     
     var model = [FirstCellModel]()
-
+    
     var playerIsVisible: Bool = false
-    let playerVC = PlayerViewController()
+    let playerVC = PlayerViewController(songTitle: " ", viewsCount: " ")
     
     
     let mainTitle: UILabel = {
@@ -41,6 +41,8 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .black
         addSubviews()
+        
+//        Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(showPlayer), userInfo: nil, repeats: false)
     }
     
     
@@ -58,15 +60,14 @@ class MainViewController: UIViewController {
         view.addSubview(playerVC.view)
         playerVC.didMove(toParent: self)
         playerVC.showViewButton.addTarget(self, action: #selector(changePlayerPostion(_:)), for: .touchUpInside)
-
+        
     }
     fileprivate func activateConstraints() {
-        
         playerVC.view.snp.makeConstraints { make in
             make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
             make.leading.trailing.equalTo(view)
             make.bottom.equalTo(view.snp.bottom).offset(550)
-
+            
         }
         mainTitle.snp.makeConstraints { make in
             make.top.equalTo(view).offset(50)
@@ -77,7 +78,7 @@ class MainViewController: UIViewController {
             make.leading.trailing.equalTo(view)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
-
+        
     }
     @objc
     fileprivate func changePlayerPostion(_ sender: UIButton) {
@@ -86,15 +87,28 @@ class MainViewController: UIViewController {
             self.playerVC.view.snp.updateConstraints { make in
                 make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
                 make.leading.trailing.equalTo(self.view)
-                make.bottom.equalTo(self.view.snp.bottom).offset(self.playerIsVisible ? 0 : 540)
+                make.bottom.equalTo(self.view.snp.bottom).offset(self.playerIsVisible ? 0 : 550)
             }
             self.view.layoutIfNeeded()
         }
     }
-    
+    @objc
+    func showPlayer() {
+        playerIsVisible.toggle()
+        playerVC.playerIsVisible.toggle()
+        UIView.animate(withDuration: 0.7) {
+            self.playerVC.view.snp.updateConstraints { make in
+                make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
+                make.leading.trailing.equalTo(self.view)
+                make.bottom.equalTo(self.view.snp.bottom).offset(0)
+            }
+            self.view.layoutIfNeeded()
+        }
+    }
 }
 
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 2
     }
@@ -105,7 +119,6 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         if indexPath.row % 2 == 0 {
             cell = tableView.dequeueReusableCell(withIdentifier: FirstPlaylist.identifier, for: indexPath)
             cell?.backgroundColor = .black
-            
         } else {
             cell = tableView.dequeueReusableCell(withIdentifier: SecondPlaylist.identifier, for: indexPath)
             cell?.backgroundColor = .black
@@ -123,12 +136,24 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-        /*      HEADER       */
+    /*      HEADER       */
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderTableView.identifier) as? HeaderTableView else {
             return UITableViewHeaderFooterView()
         }
         return header
     }
+    
+}
+
+extension MainViewController: SendVideoName {
+    func testcall(_ name: String) {
+        print(name)
+        DispatchQueue.main.async {
+            print(name)
+
+        }
+    }
+    
     
 }

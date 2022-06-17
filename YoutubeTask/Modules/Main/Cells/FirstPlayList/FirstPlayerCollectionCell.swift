@@ -12,6 +12,8 @@ class FirstPlayerCollectionCell: UICollectionViewCell {
     
     static let identifier = "FirstPlayerCollectionCell"
     
+
+    
     let firstPlaylistImage: UIImageView = {
         var view = UIImageView()
         view.image = UIImage(named: "ttew.png")

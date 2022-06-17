@@ -7,6 +7,15 @@
 
 import Foundation
 
+//protocol FirstPlaylistProtocol: AnyObject {
+//    func setFirstPlaylist(model: [FirstCellModel])
+//    func setFirsViews(count views: [ViewsModel])
+//}
+//
+//protocol SecondPlaylistProtocol: AnyObject {
+//
+//}
+
 protocol MainPlaylistProtocol: AnyObject {
     func setFirstPlaylist(model: [FirstCellModel])
     func setFirsViews(count views: [ViewsModel])

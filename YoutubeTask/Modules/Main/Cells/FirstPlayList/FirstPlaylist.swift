@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol SendVideoName: AnyObject {
+    func testcall(_ name: String)
+}
+
 class FirstPlaylist: UITableViewCell {
 
     static let identifier = "FirstPlaylist"
@@ -15,6 +19,8 @@ class FirstPlaylist: UITableViewCell {
     
     var viewsCont = [ViewsModel]()
     var presenter: MainPlaylistViewPresenterProtocol?
+    var delegate: SendVideoName!
+
     
     let firstPlaylistName: UILabel = {
         var name = UILabel()
@@ -87,6 +93,11 @@ extension FirstPlaylist: UICollectionViewDataSource {
 //        cell.setViews(views: viewsCont[indexPath.row])
         cell.backgroundColor = .clear
         return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let videoName = "GAGAGAGGAG"
+
+        
     }
     
     

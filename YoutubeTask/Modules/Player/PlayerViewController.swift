@@ -14,6 +14,11 @@ class PlayerViewController: UIViewController {
     var playerIsVisible: Bool = true
     var playVideos: Bool = false
 
+    var videoNameText: String = "" {
+        willSet {
+            self.videoName.text = videoNameText
+        }
+    }
     
     lazy var showViewButton: UIButton = {
         var button = UIButton(type: .system)
@@ -38,9 +43,10 @@ class PlayerViewController: UIViewController {
     
     let progressView: UIProgressView = {
         var progress = UIProgressView()
-        progress.progressViewStyle = .default
+        progress.progressViewStyle = .bar
         
-        progress.setProgress(0.0, animated: true)
+//        progress.setProgress(0.0, animated: true)
+//        progress
         progress.progressTintColor = .white
         progress.trackTintColor = .gray
         return progress
@@ -98,17 +104,30 @@ class PlayerViewController: UIViewController {
     }()
    
     
+     init(songTitle: String, viewsCount: String) {
+         super.init(nibName: nil, bundle: nil)
+         self.videoName.text = songTitle
+         self.viewsCount.text = "\(viewsCount) просмотра"
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
-        setProgress()
+//        setProgress()
+        Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(setProgress), userInfo: nil, repeats: true)
     }
     
-    func setProgress() {
-        playerView.currentTime { progress, error in
-            self.progressView.progress = progress
-            print(progress)
-        }
+   @objc func setProgress() {
+       playerView.currentTime()
+       self.playerView.currentTime { progress, _ in
+           self.progressView.setProgress(progress / 261, animated: true)
+           print(progress.constraintMultiplierTargetValue)
+       }
+        
     }
     fileprivate func configureView() {
         self.view.layer.cornerRadius = 18
@@ -126,7 +145,6 @@ class PlayerViewController: UIViewController {
     @objc func buttonPlayerActions(_ sender: UIButton) {
         switch sender.tag {
         case 0:
-//            playerView.pl
             playerView.previousVideo()
         case 1:
             playVideos.toggle()
@@ -199,3 +217,4 @@ class PlayerViewController: UIViewController {
         }
     }
 }
+
