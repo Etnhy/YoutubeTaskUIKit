@@ -54,6 +54,10 @@ class SecondPlayerCollectionCell: UICollectionViewCell {
         self.secondPlaylistImage.af.setImage(withURL: urlImg)
     }
     
+    func setViews(views: String) {
+        self.viewsCount.text = "\(views) просмотров."
+    }
+    
     func setupView() {
         self.layer.cornerRadius = 8
         addSubview(secondPlaylistImage)

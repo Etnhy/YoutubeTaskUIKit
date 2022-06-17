@@ -14,8 +14,9 @@ class HeaderTableView: UITableViewHeaderFooterView {
     
     let network = NetworkManager()
     var headerModel = [HeaderModel]()
-    var presenter: MainPlaylistViewPresenterProtocol?
+//    var presenter: MainPlaylistViewPresenterProtocol?
 
+    var presenter: HeaderViewProtocol?
     
     private var currentPage = 0 {
         didSet {
@@ -56,7 +57,8 @@ class HeaderTableView: UITableViewHeaderFooterView {
     }
     
     fileprivate func configureView() {
-        self.presenter = MainPresenter(view: self, networkManager: network)
+        self.presenter = HeaderPresenter(view: self, networkManager: network)
+//        self.presenter = MainPresenter(view: self, networkManager: network)
         self.heightAnchor.constraint(equalToConstant: 250).isActive = true
         self.layer.cornerRadius = 8
         
@@ -138,8 +140,7 @@ extension HeaderTableView: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         cell.configure(with: headerModel[indexPath.row])
-        let uploads = headerModel[indexPath.row].playlist
-        print(uploads)
+//        let uploads = headerModel[indexPath.row].playlist
         cell.backgroundColor = .clear
         return cell
     }
@@ -166,31 +167,42 @@ extension HeaderTableView: UICollectionViewDelegateFlowLayout {
     }
 }
 
-
-extension HeaderTableView: MainPlaylistProtocol {
-
-
+extension HeaderTableView: HeaderProtocol {
     func setHeader(model: [HeaderModel]) {
         self.headerModel = model
         self.carouselView.reloadData()
     }
     
     
-    
-    func setFirstPlaylist(model: [FirstCellModel]) {
-        ///
-    }
-    
-    func setFirsViews(count views: [ViewsModel]) {
-        ///
-    }
-    
-    func setSecondPlaylist(model: [SecondCellModel]) {
-        ///
-    }
-    
-    func failure() {
-        ///
-    }
-    
 }
+//extension HeaderTableView: MainPlaylistProtocol {
+//    func setSecondViews(count views: [String]) {
+//        ///
+//    }
+//
+//
+//
+//    func setHeader(model: [HeaderModel]) {
+//        self.headerModel = model
+//        self.carouselView.reloadData()
+//    }
+//
+//
+//
+//    func setFirstPlaylist(model: [FirstCellModel]) {
+//        ///
+//    }
+//
+//    func setFirsViews(count views: [String]) {
+//        ///
+//    }
+//
+//    func setSecondPlaylist(model: [SecondCellModel]) {
+//        ///
+//    }
+//
+//    func failure() {
+//        ///
+//    }
+//
+//}

@@ -12,6 +12,12 @@
 		603B28B12858F71600ADE45D /* FirstPlaylist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603B28B02858F71600ADE45D /* FirstPlaylist.swift */; };
 		603B28B42858F92000ADE45D /* SecondPlaylist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603B28B32858F92000ADE45D /* SecondPlaylist.swift */; };
 		603BEAF5285C95740024B0B2 /* HeaderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603BEAF4285C95740024B0B2 /* HeaderModel.swift */; };
+		603BEAF7285D14CD0024B0B2 /* HeaderPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603BEAF6285D14CD0024B0B2 /* HeaderPresenter.swift */; };
+		603BEAF9285D17570024B0B2 /* HeaderContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603BEAF8285D17570024B0B2 /* HeaderContract.swift */; };
+		603BEAFC285D17AD0024B0B2 /* FirstPlaylistPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603BEAFB285D17AD0024B0B2 /* FirstPlaylistPresenter.swift */; };
+		603BEAFF285D1B4B0024B0B2 /* FirstPlaylistContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603BEAFE285D1B4B0024B0B2 /* FirstPlaylistContract.swift */; };
+		603BEB01285D1B960024B0B2 /* SecondPlaylistPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603BEB00285D1B960024B0B2 /* SecondPlaylistPresenter.swift */; };
+		603BEB03285D1DA00024B0B2 /* SecondPlaylistContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603BEB02285D1DA00024B0B2 /* SecondPlaylistContract.swift */; };
 		603E46A8285BBD3500563C0E /* YoutubeChannelsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603E46A7285BBD3500563C0E /* YoutubeChannelsModel.swift */; };
 		603E46AA285BD04A00563C0E /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603E46A9285BD04A00563C0E /* UIView+Extension.swift */; };
 		605C6098285B404A004DA484 /* YoutubeVideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605C6097285B404A004DA484 /* YoutubeVideoModel.swift */; };
@@ -29,7 +35,6 @@
 		60B562EB285A14C500215FE0 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B562EA285A14C500215FE0 /* NetworkManager.swift */; };
 		60B562EE285A6B4C00215FE0 /* YoutubePlaylistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B562ED285A6B4C00215FE0 /* YoutubePlaylistModel.swift */; };
 		60B562F2285A7E0800215FE0 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B562F1285A7E0800215FE0 /* Configuration.swift */; };
-		60B562F5285A818400215FE0 /* MainPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B562F4285A818400215FE0 /* MainPresenter.swift */; };
 		60ED48DB2859F61900FF0C64 /* SecondPlayerCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ED48DA2859F61900FF0C64 /* SecondPlayerCollectionCell.swift */; };
 		60ED48DE285A024C00FF0C64 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ED48DD285A024C00FF0C64 /* PlayerViewController.swift */; };
 		60F48B2B285B5F8D00E6DA48 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F48B2A285B5F8D00E6DA48 /* UIImage+Extension.swift */; };
@@ -42,6 +47,12 @@
 		603B28B02858F71600ADE45D /* FirstPlaylist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstPlaylist.swift; sourceTree = "<group>"; };
 		603B28B32858F92000ADE45D /* SecondPlaylist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondPlaylist.swift; sourceTree = "<group>"; };
 		603BEAF4285C95740024B0B2 /* HeaderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderModel.swift; sourceTree = "<group>"; };
+		603BEAF6285D14CD0024B0B2 /* HeaderPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderPresenter.swift; sourceTree = "<group>"; };
+		603BEAF8285D17570024B0B2 /* HeaderContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderContract.swift; sourceTree = "<group>"; };
+		603BEAFB285D17AD0024B0B2 /* FirstPlaylistPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstPlaylistPresenter.swift; sourceTree = "<group>"; };
+		603BEAFE285D1B4B0024B0B2 /* FirstPlaylistContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstPlaylistContract.swift; sourceTree = "<group>"; };
+		603BEB00285D1B960024B0B2 /* SecondPlaylistPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondPlaylistPresenter.swift; sourceTree = "<group>"; };
+		603BEB02285D1DA00024B0B2 /* SecondPlaylistContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondPlaylistContract.swift; sourceTree = "<group>"; };
 		603E46A7285BBD3500563C0E /* YoutubeChannelsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeChannelsModel.swift; sourceTree = "<group>"; };
 		603E46A9285BD04A00563C0E /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		605C6097285B404A004DA484 /* YoutubeVideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeVideoModel.swift; sourceTree = "<group>"; };
@@ -61,7 +72,6 @@
 		60B562EA285A14C500215FE0 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		60B562ED285A6B4C00215FE0 /* YoutubePlaylistModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubePlaylistModel.swift; sourceTree = "<group>"; };
 		60B562F1285A7E0800215FE0 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
-		60B562F4285A818400215FE0 /* MainPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPresenter.swift; sourceTree = "<group>"; };
 		60ED48DA2859F61900FF0C64 /* SecondPlayerCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondPlayerCollectionCell.swift; sourceTree = "<group>"; };
 		60ED48DD285A024C00FF0C64 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		60F48B2A285B5F8D00E6DA48 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
@@ -84,7 +94,9 @@
 			isa = PBXGroup;
 			children = (
 				603B28B02858F71600ADE45D /* FirstPlaylist.swift */,
-				60A00A5D28590BEA00B43FFA /* FirstPlayerCollectionCell.swift */,
+				603BEAFB285D17AD0024B0B2 /* FirstPlaylistPresenter.swift */,
+				603BEAFE285D1B4B0024B0B2 /* FirstPlaylistContract.swift */,
+				603BEAFD285D1B300024B0B2 /* FirstPlaylistCell */,
 			);
 			path = FirstPlayList;
 			sourceTree = "<group>";
@@ -94,8 +106,26 @@
 			children = (
 				603B28B32858F92000ADE45D /* SecondPlaylist.swift */,
 				60ED48DA2859F61900FF0C64 /* SecondPlayerCollectionCell.swift */,
+				603BEB00285D1B960024B0B2 /* SecondPlaylistPresenter.swift */,
+				603BEB02285D1DA00024B0B2 /* SecondPlaylistContract.swift */,
 			);
 			path = SecondPlaylist;
+			sourceTree = "<group>";
+		};
+		603BEAFA285D175F0024B0B2 /* HeaderCell */ = {
+			isa = PBXGroup;
+			children = (
+				60B2D7002858EBA0000A9D43 /* CarouselCollectionViewCell.swift */,
+			);
+			path = HeaderCell;
+			sourceTree = "<group>";
+		};
+		603BEAFD285D1B300024B0B2 /* FirstPlaylistCell */ = {
+			isa = PBXGroup;
+			children = (
+				60A00A5D28590BEA00B43FFA /* FirstPlayerCollectionCell.swift */,
+			);
+			path = FirstPlaylistCell;
 			sourceTree = "<group>";
 		};
 		60A00A582859048000B43FFA /* Extension */ = {
@@ -133,7 +163,6 @@
 				60B562E9285A14B900215FE0 /* Network */,
 				60A00A582859048000B43FFA /* Extension */,
 				60B2D6F82858B16B000A9D43 /* Modules */,
-				60B562F3285A816900215FE0 /* Presenters */,
 				60B2D6E028589DDE000A9D43 /* AppDelegate.swift */,
 				60B2D6E228589DDE000A9D43 /* SceneDelegate.swift */,
 				60B2D6E628589DDE000A9D43 /* Main.storyboard */,
@@ -176,8 +205,10 @@
 		60B2D6FF2858EB85000A9D43 /* Header */ = {
 			isa = PBXGroup;
 			children = (
+				603BEAF6285D14CD0024B0B2 /* HeaderPresenter.swift */,
 				60B2D6FD2858B384000A9D43 /* HeaderTableView.swift */,
-				60B2D7002858EBA0000A9D43 /* CarouselCollectionViewCell.swift */,
+				603BEAF8285D17570024B0B2 /* HeaderContract.swift */,
+				603BEAFA285D175F0024B0B2 /* HeaderCell */,
 			);
 			path = Header;
 			sourceTree = "<group>";
@@ -201,14 +232,6 @@
 				603BEAF4285C95740024B0B2 /* HeaderModel.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		60B562F3285A816900215FE0 /* Presenters */ = {
-			isa = PBXGroup;
-			children = (
-				60B562F4285A818400215FE0 /* MainPresenter.swift */,
-			);
-			path = Presenters;
 			sourceTree = "<group>";
 		};
 		60ED48DC2859FCBC00FF0C64 /* Player */ = {
@@ -352,13 +375,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				603BEAFF285D1B4B0024B0B2 /* FirstPlaylistContract.swift in Sources */,
 				60B2D7012858EBA0000A9D43 /* CarouselCollectionViewCell.swift in Sources */,
+				603BEB01285D1B960024B0B2 /* SecondPlaylistPresenter.swift in Sources */,
+				603BEAFC285D17AD0024B0B2 /* FirstPlaylistPresenter.swift in Sources */,
 				603BEAF5285C95740024B0B2 /* HeaderModel.swift in Sources */,
 				605C609A285B42EA004DA484 /* FirstCellModel.swift in Sources */,
-				60B562F5285A818400215FE0 /* MainPresenter.swift in Sources */,
 				603B28B42858F92000ADE45D /* SecondPlaylist.swift in Sources */,
+				603BEB03285D1DA00024B0B2 /* SecondPlaylistContract.swift in Sources */,
+				603BEAF7285D14CD0024B0B2 /* HeaderPresenter.swift in Sources */,
 				60B562EE285A6B4C00215FE0 /* YoutubePlaylistModel.swift in Sources */,
 				60ED48DE285A024C00FF0C64 /* PlayerViewController.swift in Sources */,
+				603BEAF9285D17570024B0B2 /* HeaderContract.swift in Sources */,
 				60A00A5C285904AB00B43FFA /* UIColor+Extension.swift in Sources */,
 				60B562F2285A7E0800215FE0 /* Configuration.swift in Sources */,
 				60ED48DB2859F61900FF0C64 /* SecondPlayerCollectionCell.swift in Sources */,

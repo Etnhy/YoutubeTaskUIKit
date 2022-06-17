@@ -12,14 +12,13 @@ protocol SendVideoName: AnyObject {
 }
 
 class FirstPlaylist: UITableViewCell {
-
     static let identifier = "FirstPlaylist"
     
     var model = [FirstCellModel]()
-    
-    var viewsCont = [ViewsModel]()
-    var presenter: MainPlaylistViewPresenterProtocol?
     var delegate: SendVideoName!
+    let network = NetworkManager()
+    var presenter: FirstPlaylistViewProtocol?
+    var viewsCont = [String]()
 
     
     let firstPlaylistName: UILabel = {
@@ -55,9 +54,7 @@ class FirstPlaylist: UITableViewCell {
     }
     
     func setupView() {
-        let network = NetworkManager()
-        self.presenter = MainPresenter(view: self, networkManager: network)
-
+        self.presenter = FirstPlaylistPresenter(view: self, networkManager: network)
     }
     func addSubviews() {
         self.addSubview(firstPlaylistCollectionView)
@@ -90,7 +87,10 @@ extension FirstPlaylist: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         cell.configure(with: model[indexPath.row])
-//        cell.setViews(views: viewsCont[indexPath.row])
+        
+        if viewsCont.count == model.count {
+            cell.setViews(views: viewsCont[indexPath.row])
+        }
         cell.backgroundColor = .clear
         return cell
     }
@@ -99,8 +99,6 @@ extension FirstPlaylist: UICollectionViewDataSource {
 
         
     }
-    
-    
 }
 
 extension FirstPlaylist: UICollectionViewDelegateFlowLayout {
@@ -108,25 +106,16 @@ extension FirstPlaylist: UICollectionViewDelegateFlowLayout {
         return CGSize(width: 180, height: 130)
     }
 }
-extension FirstPlaylist: MainPlaylistProtocol {
-    
-    func setFirsViews(count views: [ViewsModel]) {
-        self.viewsCont = views
-    }
 
-    func setFirstPlaylist(model: [FirstCellModel]) {
+extension FirstPlaylist: FirstPlaylistProtocol {
+    func setPlaylist(model: [FirstCellModel]) {
         self.model = model
-        self.firstPlaylistCollectionView.reloadData()
     }
     
-    func setHeader(model: [HeaderModel]) {
-        ///
-    }
-    
-    func setSecondPlaylist(model: [SecondCellModel]) {
-        ///
-    }
-    func failure() {
-        ///
+    func setViews(count views: [String]) {
+        DispatchQueue.main.asyncAfter(deadline: .now()+2) {
+            self.viewsCont = views
+            self.firstPlaylistCollectionView.reloadData()
+        }
     }
 }

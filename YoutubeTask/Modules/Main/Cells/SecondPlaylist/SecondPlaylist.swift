@@ -11,8 +11,10 @@ import SnapKit
 class SecondPlaylist: UITableViewCell {
     
     var secondModel = [SecondCellModel]()
-
-    var presenter: MainPlaylistViewPresenterProtocol?
+    var secondViewsArray: [String] = []
+    let network = NetworkManager()
+    var presenter: SecondPlaylistViewProtocol?
+//    var presenter: MainPlaylistViewPresenterProtocol?
 
     let secondPlaylistName: UILabel = {
         var name = UILabel()
@@ -46,9 +48,8 @@ class SecondPlaylist: UITableViewCell {
     }
     
     fileprivate func configureView() {
-        let network = NetworkManager()
-        self.presenter = MainPresenter(view: self, networkManager: network)
-        
+//        self.presenter = MainPresenter(view: self, networkManager: network)
+        self.presenter = SecondPlaylistPresenter(view: self, networkManager: network)
         addSubview(secondPlaylistName)
         addSubview(secondPlaylistCollectionView)
         
@@ -80,6 +81,10 @@ extension SecondPlaylist: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         cell.configure(with: secondModel[indexPath.row])
+        
+        if secondViewsArray.count == secondModel.count {
+            cell.setViews(views: secondViewsArray[indexPath.row])
+        }
         cell.backgroundColor = .clear
         return cell
     }
@@ -91,28 +96,50 @@ extension SecondPlaylist: UICollectionViewDataSource {
 extension SecondPlaylist: UICollectionViewDelegateFlowLayout {
     
 }
-extension SecondPlaylist: MainPlaylistProtocol {
-    func setHeader(model: [HeaderModel]) {
-        ///
-    }
-    
-    func setFirstPlaylist(model: [FirstCellModel]) {
-        ///
-    }
-    
-    func setFirsViews(count views: [ViewsModel]) {
-        ///
-    }
-    
+
+extension SecondPlaylist: SecondPlaylistProtocol {
     func setSecondPlaylist(model: [SecondCellModel]) {
         self.secondModel = model
-        print(secondModel)
-        self.secondPlaylistCollectionView.reloadData()
     }
     
-    func failure() {
-        ///
+    func setSecondViews(count views: [String]) {
+        DispatchQueue.main.asyncAfter(deadline: .now()+2) {
+            self.secondViewsArray = views
+            self.secondPlaylistCollectionView.reloadData()
+        }
     }
     
     
 }
+//extension SecondPlaylist: MainPlaylistProtocol {
+//    func setSecondViews(count views: [String]) {
+//        DispatchQueue.main.asyncAfter(deadline: .now()+2) {
+//            self.secondViewsArray = views
+//            print(views)
+//            self.secondPlaylistCollectionView.reloadData()
+//        }
+//    }
+//
+//    func setHeader(model: [HeaderModel]) {
+//        ///
+//    }
+//
+//    func setFirstPlaylist(model: [FirstCellModel]) {
+//        ///
+//    }
+//
+//    func setFirsViews(count views: [String]) {
+//        ///
+//    }
+//
+//    func setSecondPlaylist(model: [SecondCellModel]) {
+//        self.secondModel = model
+//        self.secondPlaylistCollectionView.reloadData()
+//    }
+//
+//    func failure() {
+//        ///
+//    }
+//
+//
+//}

@@ -35,7 +35,7 @@ class FirstPlayerCollectionCell: UICollectionViewCell {
     
     let viewsCount: UILabel = {
         var label = UILabel()
-        label.text = "123312412 просмотров"
+//        label.text = "123312412 "
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.textColor = .gray
         return label
@@ -60,8 +60,8 @@ class FirstPlayerCollectionCell: UICollectionViewCell {
         self.firstPlaylistImage.af.setImage(withURL: urlImg)
     }
     
-    func setViews(views: ViewsModel) {
-        self.viewsCount.text = views.view
+    func setViews(views: String) {
+        self.viewsCount.text = "\(views) просмотров."
     }
     
     func activateConstraints() {
