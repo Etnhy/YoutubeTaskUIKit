@@ -11,7 +11,11 @@ class HeaderTableView: UITableViewHeaderFooterView {
     
     var carousalTimer: Timer?
     var newOffsetX: CGFloat = 0.0
+    
+    var headerModel = [HeaderModel]()
+    var presenter: MainPlaylistViewPresenterProtocol?
 
+    
     private var currentPage = 0 {
         didSet {
             pageControl.currentPage = currentPage
@@ -32,14 +36,14 @@ class HeaderTableView: UITableViewHeaderFooterView {
     }()
     
     let pageControl: UIPageControl = {
-       var pageControl = UIPageControl()
+        var pageControl = UIPageControl()
         pageControl.numberOfPages = 4
         pageControl.backgroundColor = .black
         return pageControl
     }()
     
     static let identifier = "HeaderTableView"
-
+    
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         configureView()
@@ -51,12 +55,15 @@ class HeaderTableView: UITableViewHeaderFooterView {
     }
     
     fileprivate func configureView() {
+        let network = NetworkManager()
+        
+        self.presenter? = MainPresenter(view: self, networkManager: network)
+        
         self.heightAnchor.constraint(equalToConstant: 250).isActive = true
         self.layer.cornerRadius = 8
         
         addSubview(carouselView)
         addSubview(pageControl)
-//        startTimer()
         setTimer()
         activateConstraints()
     }
@@ -70,7 +77,6 @@ class HeaderTableView: UITableViewHeaderFooterView {
         pageControl.snp.makeConstraints { make in
             make.top.equalTo(carouselView.snp.bottom)
             make.leading.trailing.equalTo(self)
-//            make.height.equalTo(40)
             make.bottom.equalTo(self)
         }
     }
@@ -84,60 +90,63 @@ class HeaderTableView: UITableViewHeaderFooterView {
         return currentPage
     }
     
-    @objc
-    fileprivate func moveToNextPage() {
+    @objc fileprivate func moveToNextPage() {
         let pageWidth: CGFloat = self.carouselView.frame.width
         let maxWidth: CGFloat = pageWidth * 4
         let contentOffset: CGFloat = self.carouselView.contentOffset.x
-
+        
         var swipeToX = contentOffset + pageWidth
-
+        
         if contentOffset + pageWidth == maxWidth   {
             swipeToX = 0
         }
         self.carouselView.scrollRectToVisible(
             CGRect(x: swipeToX, y: 0, width: pageWidth, height: self.carouselView.frame.height),
-                                              animated: true)
+            animated: true)
     }
+    
     func startTimer() {
-            carousalTimer = Timer(fire: Date(), interval: 0.015, repeats: true) { (timer) in
-                let initailPoint = CGPoint(x: self.newOffsetX,y :0)
-                if __CGPointEqualToPoint(initailPoint, self.carouselView.contentOffset) {
-                    if self.newOffsetX < self.carouselView.contentSize.width {
-                        self.newOffsetX += 0.25
-                    }
-                    if self.newOffsetX > self.carouselView.contentSize.width - self.carouselView.frame.size.width {
-                        self.newOffsetX = 0
-                    }
-                    self.carouselView.contentOffset = CGPoint(x: self.newOffsetX,y :0)
-
-                } else {
-                    self.newOffsetX = self.carouselView.contentOffset.x
+        carousalTimer = Timer(fire: Date(), interval: 0.015, repeats: true) { (timer) in
+            let initailPoint = CGPoint(x: self.newOffsetX,y :0)
+            if __CGPointEqualToPoint(initailPoint, self.carouselView.contentOffset) {
+                if self.newOffsetX < self.carouselView.contentSize.width {
+                    self.newOffsetX += 0.25
                 }
+                if self.newOffsetX > self.carouselView.contentSize.width - self.carouselView.frame.size.width {
+                    self.newOffsetX = 0
+                }
+                self.carouselView.contentOffset = CGPoint(x: self.newOffsetX,y :0)
+                
+            } else {
+                self.newOffsetX = self.carouselView.contentOffset.x
             }
-            RunLoop.current.add(carousalTimer!, forMode: .common)
+        }
+        RunLoop.current.add(carousalTimer!, forMode: .common)
     }
     func setTimer() {
         Timer.scheduledTimer(timeInterval: 6, target: self, selector: #selector(moveToNextPage), userInfo: nil, repeats: true)
-
+        
     }
-
+    
 }
 
 extension HeaderTableView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return headerModel.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CarouselCollectionViewCell.identifier, for: indexPath) as? CarouselCollectionViewCell else {
             return UICollectionViewCell()
         }
+        cell.configure(with: headerModel[indexPath.row])
+        let uploads = headerModel[indexPath.row].playlist
+        print(uploads)
         cell.backgroundColor = .clear
         return cell
     }
     
-//    collectionview
+    //    collectionview
     
 }
 
@@ -157,4 +166,32 @@ extension HeaderTableView: UICollectionViewDelegateFlowLayout {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         currentPage = getCurrentPage()
     }
+}
+
+
+extension HeaderTableView: MainPlaylistProtocol {
+    func setFirstPlaylist(model: [FirstCellModel]) {
+        ///
+    }
+    
+    func setFirsViews(count views: [ViewsModel]) {
+        ///
+    }
+    
+    func setSecondPlaylist(model: [SecondCellModel]) {
+        ///
+    }
+    
+    func failure() {
+        ///
+    }
+    
+
+    func setHeader(model: [HeaderModel]) {
+        self.headerModel = model
+        self.carouselView.reloadData()
+    }
+
+    
+    
 }

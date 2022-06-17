@@ -7,22 +7,34 @@
 
 import Foundation
 
+//// MARK: - header playlist protocol
+//protocol HeaderPlaylistProtocl: AnyObject {
+//    func setHeader(model: [HeaderModel])
+//
+//}
+//
+//// MARK: - first playlist protocol
 //protocol FirstPlaylistProtocol: AnyObject {
 //    func setFirstPlaylist(model: [FirstCellModel])
 //    func setFirsViews(count views: [ViewsModel])
 //}
-//
-//protocol SecondPlaylistProtocol: AnyObject {
-//
+//// MARK: - second playlist protocol
+//protocol SecondPlaylostProtocol: AnyObject {
+//    func setSecondPlaylist(model: [SecondCellModel])
 //}
 
 protocol MainPlaylistProtocol: AnyObject {
+    func setHeader(model: [HeaderModel])
     func setFirstPlaylist(model: [FirstCellModel])
     func setFirsViews(count views: [ViewsModel])
-    
     func setSecondPlaylist(model: [SecondCellModel])
     func failure()
 }
+//protocol BlockProtocols: AnyObject {
+//    let header : HeaderPlaylistProtocl
+//    let first   : FirstPlaylistProtocol
+//    let second  : Secon
+//}
 
 protocol MainPlaylistViewPresenterProtocol: AnyObject {
     init(view: MainPlaylistProtocol, networkManager: NetworkManager)
@@ -30,13 +42,18 @@ protocol MainPlaylistViewPresenterProtocol: AnyObject {
     func setFirst()
     func setFirstViews()
     
+    func setChannels()
+    
     func setSecond()
 }
 
 class MainPresenter: MainPlaylistViewPresenterProtocol {
+
+    var headerModel = [HeaderModel]()
     var firstModel  = [FirstCellModel]()
     var secondModel = [SecondCellModel]()
     
+    var youtubeChannelModel: [YoutubeChannelItems]?
     var welcome: [Items]?
     var viewsCountModel: [ViewsModel]?
     var videoItemss: [VideoItems]?
@@ -49,10 +66,26 @@ class MainPresenter: MainPlaylistViewPresenterProtocol {
         self.view = view
         self.networkManager = networkManager
 //        setFirst()
+//        setChannels()
     }
     
     
-
+    func setChannels() {
+        networkManager.getChannels { [weak self] result in
+            switch result {
+            case .success(let channels):
+                self?.youtubeChannelModel = channels.items
+                let model = self?.youtubeChannelModel?.compactMap({
+                    HeaderModel(channelNames: $0.snippet.title, subscribersCount: $0.statistics.subscriberCount, channelImgage: $0.snippet.thumbnails.high.url, playlist: $0.contentDetails.relatedPlaylists.uploads)
+                })
+                self?.view?.setHeader(model: model!)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    
     func setFirst() {
         DispatchQueue.main.async {
             self.networkManager.getYoutubePlaylist(playlistNumber: Configuration.Playlists.first) { [weak self] result in

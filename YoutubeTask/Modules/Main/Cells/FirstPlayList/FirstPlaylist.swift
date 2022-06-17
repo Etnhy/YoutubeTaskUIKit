@@ -56,7 +56,7 @@ class FirstPlaylist: UITableViewCell {
     
     func setupView() {
         let network = NetworkManager()
-        self.presenter = MainPresenter(view: self, networkManager: network)
+//        self.presenter = MainPresenter(view: self, networkManager: network)
 
     }
     func addSubviews() {
@@ -108,25 +108,29 @@ extension FirstPlaylist: UICollectionViewDelegateFlowLayout {
         return CGSize(width: 180, height: 130)
     }
 }
-extension FirstPlaylist: MainPlaylistProtocol {
-    func setSecondPlaylist(model: [SecondCellModel]) {
-        ///
-    }
-    
-    func setFirsViews(count views: [ViewsModel]) {
-        self.viewsCont = views
-    }
-    
-
-    
-    func setFirstPlaylist(model: [FirstCellModel]) {
-        self.model = model
-        self.firstPlaylistCollectionView.reloadData()
-    }
-    
-    func failure() {
-        ///
-    }
-    
-    
-}
+//extension FirstPlaylist: MainPlaylistProtocol {
+//    func setHeader(model: [HeaderModel]) {
+//        ///
+//    }
+//    
+//    func setSecondPlaylist(model: [SecondCellModel]) {
+//        ///
+//    }
+//    
+//    func setFirsViews(count views: [ViewsModel]) {
+//        self.viewsCont = views
+//    }
+//    
+//
+//    
+//    func setFirstPlaylist(model: [FirstCellModel]) {
+//        self.model = model
+//        self.firstPlaylistCollectionView.reloadData()
+//    }
+//    
+//    func failure() {
+//        ///
+//    }
+//    
+//    
+//}

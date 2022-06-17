@@ -11,9 +11,12 @@ import Alamofire
 protocol NetworkLayerProtocol {
     func getYoutubePlaylist(playlistNumber: String,completion: @escaping (Result<Welcome, AFError>) -> ())
     func getViewsVideos(videoId: String,completion: @escaping (Result<YoutubeVideoResponse,AFError>) ->())
+    func getChannels(completion: @escaping (Result<YoutubeChannelsModel,AFError>) -> ())
 }
 
-class NetworkManager {
+class NetworkManager: NetworkLayerProtocol {
+
+    
     static let shared = NetworkManager()
     
     fileprivate let apiUrl = Configuration.Net.api_url
@@ -22,6 +25,10 @@ class NetworkManager {
     fileprivate let firstPlayList = Configuration.Playlists.first
     fileprivate let secondPlaylist = Configuration.Playlists.second
     
+    func getChannels(completion: @escaping (Result<YoutubeChannelsModel, AFError>) -> ()) {
+        let url = "\(apiUrl)channels?part=snippet%2CcontentDetails%2Cstatistics&id=UCpOrC2F6a6SswsBxGT0bJaA&id=UCf-M7ZMAeru8ubUHWQsxiVQ&id=UCnQHLFKsCRzyYTLJgA3Ud8Q&id=UCIgA09xiZmp-xxrcf_tFEVw&key=\(apiKey)"
+        downloadJson(url: url, completion: completion)
+    }
     
     func getYoutubePlaylist(playlistNumber: String ,completion: @escaping (Result<Welcome, AFError>) -> ()) {
         let url = "\(apiUrl)playlistItems?playlistId=\(playlistNumber)&maxResults=10&part=snippet%2CcontentDetails&key=\(apiKey)"
@@ -53,7 +60,8 @@ class NetworkManager {
     
 }
 // MARK: - channels
-//   'https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id=UCpOrC2F6a6SswsBxGT0bJaA&id=UCf-M7ZMAeru8ubUHWQsxiVQ&id=UCnQHLFKsCRzyYTLJgA3Ud8Q&id=UCIgA09xiZmp-xxrcf_tFEVw&key=AIzaSyAvUBNHFqFgOKKUzN152a1z5bMkxW5wzwc
+//  'https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id=UCpOrC2F6a6SswsBxGT0bJaA&id=UCf-M7ZMAeru8ubUHWQsxiVQ&id=UCnQHLFKsCRzyYTLJgA3Ud8Q&id=UCIgA09xiZmp-xxrcf_tFEVw&key=[YOUR_API_KEY]' \
+
 
 
 //https://www.googleapis.com/youtube/v3/playlistItems?playlistId=PLNZta_SFvNjFecxGDwyektG2-3LdgnhbD&maxResults=10&part=snippet%2CcontentDetails&key=AIzaSyAvUBNHFqFgOKKUzN152a1z5bMkxW5wzwc

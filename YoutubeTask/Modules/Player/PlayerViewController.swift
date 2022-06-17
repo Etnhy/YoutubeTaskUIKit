@@ -125,7 +125,6 @@ class PlayerViewController: UIViewController {
        playerView.currentTime()
        self.playerView.currentTime { progress, _ in
            self.progressView.setProgress(progress / 261, animated: true)
-           print(progress.constraintMultiplierTargetValue)
        }
         
     }

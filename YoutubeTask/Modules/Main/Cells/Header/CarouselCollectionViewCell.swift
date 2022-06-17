@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AlamofireImage
 
 class CarouselCollectionViewCell: UICollectionViewCell {
     
@@ -18,17 +19,21 @@ class CarouselCollectionViewCell: UICollectionViewCell {
         return img
     }()
     
-    
+    var uploads: String = ""
+
     let albumName: UILabel = {
        var albumName = UILabel()
         albumName.text = "Album name"
         albumName.font = UIFont.systemFont(ofSize: 26, weight: .semibold)
+        albumName.textColor = .white
         return albumName
     }()
     
     let subscribersCount: UILabel = {
         var subCount = UILabel()
         subCount.text = "123456 подписчиков"
+        subCount.textColor = .gray
+        subCount.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         return subCount
     }()
     
@@ -38,8 +43,6 @@ class CarouselCollectionViewCell: UICollectionViewCell {
         configuration.image = UIImage(named: "Play")
         configuration.cornerStyle = .capsule
         configuration.background.backgroundColor = .purple
-//        configuration.background.gr
-//        button.backgroundColor = .purple
         button.configuration = configuration
         
         return button
@@ -67,15 +70,13 @@ class CarouselCollectionViewCell: UICollectionViewCell {
 
         activateConstraints()
     }
-    
-//    private func setupGradientButton() {
-//        let gradientLayer: CAGradientLayer = CAGradientLayer()
-//        gradientLayer.frame.size = playButton.frame.size
-//        gradientLayer.colors = [UIColor.buttonGradientStart().cgColor,
-//                                UIColor.buttonGradientEnd().cgColor]
-//        playButton.layer.addSublayer(gradientLayer)
-//        self.addSubview(playButton)
-//    }
+    func configure(with model: HeaderModel) {
+        self.albumName.text = model.channelNames
+        self.subscribersCount.text = "\(model.subscribersCount) подписчика."
+        self.uploads = model.playlist
+        guard let url = URL(string: "\(model.channelImgage)") else { return }
+        self.bannerImage.af.setImage(withURL: url)
+    }
     
     func activateConstraints() {
         bannerImage.snp.makeConstraints { make in
