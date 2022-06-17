@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 protocol SendVideoName: AnyObject {
     func testcall(_ name: String)
@@ -79,24 +81,25 @@ class FirstPlaylist: UITableViewCell {
 extension FirstPlaylist: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return model.count
+        return 4//model.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FirstPlayerCollectionCell.identifier, for: indexPath) as? FirstPlayerCollectionCell else {
             return UICollectionViewCell()
         }
-        cell.configure(with: model[indexPath.row])
-        
-        if viewsCont.count == model.count {
-            cell.setViews(views: viewsCont[indexPath.row])
-        }
+//        cell.configure(with: model[indexPath.row])
+//
+//        if viewsCont.count == model.count {
+//            cell.setViews(views: viewsCont[indexPath.row])
+//        }
         cell.backgroundColor = .clear
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let videoName = "GAGAGAGGAG"
-
+            
+        self.delegate?.testcall(videoName)
         
     }
 }

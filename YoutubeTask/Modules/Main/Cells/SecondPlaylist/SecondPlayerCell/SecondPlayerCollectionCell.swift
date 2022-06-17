@@ -55,7 +55,7 @@ class SecondPlayerCollectionCell: UICollectionViewCell {
     }
     
     func setViews(views: String) {
-        self.viewsCount.text = "\(views) просмотров."
+        self.viewsCount.text = "\(views) просмотров"
     }
     
     func setupView() {

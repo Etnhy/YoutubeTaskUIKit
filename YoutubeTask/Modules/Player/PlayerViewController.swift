@@ -13,7 +13,8 @@ class PlayerViewController: UIViewController {
     let buttonName = ["Prev","Play","Next"]
     var playerIsVisible: Bool = true
     var playVideos: Bool = false
-
+    
+    var presenter: PlayerViewPresenterProtocol?
     var videoNameText: String = "" {
         willSet {
             self.videoName.text = videoNameText
@@ -36,17 +37,12 @@ class PlayerViewController: UIViewController {
 //        view.load(withVideoId: "GJzUu8ZjsCA")
         view.load(withPlaylistId: Configuration.Playlists.first)
         view.backgroundColor = .black
-//        view.
-        
         return view
     }()
     
     let progressView: UIProgressView = {
         var progress = UIProgressView()
         progress.progressViewStyle = .bar
-        
-//        progress.setProgress(0.0, animated: true)
-//        progress
         progress.progressTintColor = .white
         progress.trackTintColor = .gray
         return progress
@@ -116,6 +112,7 @@ class PlayerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setPresenter()
         configureView()
 //        setProgress()
         Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(setProgress), userInfo: nil, repeats: true)
@@ -127,6 +124,9 @@ class PlayerViewController: UIViewController {
            self.progressView.setProgress(progress / 261, animated: true)
        }
         
+    }
+    fileprivate func setPresenter() {
+        self.presenter = PlayerPresenter(view: self)
     }
     fileprivate func configureView() {
         self.view.layer.cornerRadius = 18
@@ -217,3 +217,10 @@ class PlayerViewController: UIViewController {
     }
 }
 
+extension PlayerViewController: PlayerPresenterProtocol {
+    func setPlayer() {
+        ///
+    }
+    
+    
+}

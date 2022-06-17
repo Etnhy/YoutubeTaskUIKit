@@ -16,7 +16,7 @@ class HeaderPresenter: HeaderViewProtocol {
     required init(view: HeaderProtocol, networkManager: NetworkManager) {
         self.view = view
         self.networkManager = networkManager
-        setChannels()
+//        setChannels()
     }
     
     func setChannels() {

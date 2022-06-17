@@ -7,7 +7,6 @@
 
 import UIKit
 import SnapKit
-import YoutubeDataKit
 
 class MainViewController: UIViewController {
     
@@ -37,6 +36,12 @@ class MainViewController: UIViewController {
         return table
     }()
     
+    let showPlayerButton: UIButton = {
+        var button = UIButton()
+        button.backgroundColor = .systemPink
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
@@ -49,7 +54,8 @@ class MainViewController: UIViewController {
     fileprivate func addSubviews() {
         view.addSubview(mainTitle)
         view.addSubview(table)
-        addPlayerVC()
+        view.addSubview(showPlayerButton)
+//        addPlayerVC()
         
         
         activateConstraints()
@@ -63,11 +69,16 @@ class MainViewController: UIViewController {
         
     }
     fileprivate func activateConstraints() {
-        playerVC.view.snp.makeConstraints { make in
-            make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
+//        playerVC.view.snp.makeConstraints { make in
+//            make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
+//            make.leading.trailing.equalTo(view)
+//            make.bottom.equalTo(view.snp.bottom).offset(550)
+//
+//        }
+        showPlayerButton.snp.makeConstraints { make in
             make.leading.trailing.equalTo(view)
-            make.bottom.equalTo(view.snp.bottom).offset(550)
-            
+            make.bottom.equalTo(view.snp.bottom)
+            make.height.equalTo(60)
         }
         mainTitle.snp.makeConstraints { make in
             make.top.equalTo(view).offset(50)
@@ -154,6 +165,4 @@ extension MainViewController: SendVideoName {
 
         }
     }
-    
-    
 }

@@ -19,12 +19,13 @@ class SecondPlaylistPresenter: SecondPlaylistViewProtocol {
     required init(view: SecondPlaylistProtocol, networkManager: NetworkManager) {
         self.view = view
         self.networkManager = networkManager
-        setSecond()
+//        setSecond()
     }
     
     func setSecond() {
         DispatchQueue.main.async {
             self.networkManager.getYoutubePlaylist(playlistNumber: Configuration.Playlists.second) { [weak self] result in
+
                 switch result {
                 case .success(let succes):
                     self?.welcome = succes.items
