@@ -19,7 +19,7 @@ class FirstPlaylistPresenter: FirstPlaylistViewProtocol {
     required init(view: FirstPlaylistProtocol, networkManager: NetworkManager) {
         self.view = view
         self.networkManager = networkManager
-        setFirst()
+//        setFirst()
     }
     
     

@@ -16,7 +16,7 @@ class PlayerViewController: UIViewController {
     let buttonName = ["Prev","Play","Next"]
     var playerIsVisible: Bool = true
     var playVideos: Bool = false
-    
+    var clear: ClearPlayer!
     weak var delegate: ShowButtonDelegate?
     
     var presenter: PlayerViewPresenterProtocol?
@@ -36,7 +36,7 @@ class PlayerViewController: UIViewController {
     lazy var showViewButton: UIButton = {
         var button = UIButton(type: .system)
         var config = UIButton.Configuration.plain()
-        config.image = UIImage(named: "Close_Open")
+        config.image = UIImage(named: "Close_Open")?.rotated(byDegrees: 180)
         button.configuration = config
         button.addTarget(self, action: #selector(imageChanger), for: .touchUpInside)
         button.addTarget(self, action: #selector(dismissSelf), for: .touchUpInside)
@@ -136,6 +136,7 @@ class PlayerViewController: UIViewController {
         setPresenter()
         addGesture()
         configureView()
+        self.clear = self
 //        setProgress()
 //        self.delegate = self
         Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(setProgress), userInfo: nil, repeats: true)
@@ -204,16 +205,72 @@ class PlayerViewController: UIViewController {
     @objc func imageChanger() {
         playerIsVisible.toggle()
         var config = UIButton.Configuration.plain()
-        config.image = playerIsVisible ? UIImage(named: "Close_Open")?.rotated(byDegrees: 180) : UIImage(named: "Close_Open")
+        config.image = playerIsVisible ? UIImage(named: "Close_Open"): UIImage(named: "Close_Open")?.rotated(byDegrees: 180) 
         
         showViewButton.configuration = config
     }
     
     @objc func dismissSelf() {
-        playerIsVisible.toggle()
-        self.delegate?.setShow(false)
-        self.dismiss(animated: true)
+        
+//        self.delegate?.setShow(true)
+//        if self.parent!.children.count > 0 {
+//            let mainChildren = self.parent!.children
+//
+//            mainChildren.forEach { child in
+//                let childName = String(describing: child.self)
+//                let currentVCName = String(describing: self)
+//
+//                if childName == currentVCName {
+//                    child.willMove(toParent: nil)
+//                    child.view.removeFromSuperview()
+//                    child.removeFromParent()
+//
+//                }
+//            }
+//        }
+
+//        if parent!.children.count > 0 {
+//            let mainChildren = parent!.children
+//
+//            mainChildren.forEach { child in
+//                let childName = String(describing: child.self)
+//                let currentVCName = String(describing: self)
+//
+//                if childName == currentVCName {
+//                    child.willMove(toParent: nil)
+//                    child.view.removeFromSuperview()
+//                    child.removeFromParent()
+//
+//                }
+//            }
+//        }
+
+//        playerIsVisible.toggle()
+//        UIView.animate(withDuration: 0.7) {
+//            self.view.snp.makeConstraints { make in
+//                make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
+//                make.leading.trailing.equalTo(self.view)
+//                make.bottom.equalTo(self.view.snp.bottom).offset(550)
+//            }
+//        } completion: { _ in
+//            if self.parent!.children.count > 0 {
+//                let mainChildren = self.parent!.children
+//
+//                mainChildren.forEach { child in
+//                    let childName = String(describing: child.self)
+//                    let currentVCName = String(describing: self)
+//
+//                    if childName == currentVCName {
+//                        child.willMove(toParent: nil)
+//                        child.view.removeFromSuperview()
+//                        child.removeFromParent()
+//
+//                    }
+//                }
+//            }
+//        }
     }
+    
     @objc func changeVolume(_ sender: UISlider) {
         
     }
@@ -280,4 +337,13 @@ extension PlayerViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         return touch.view == gestureRecognizer.view
     }
+}
+extension PlayerViewController: ClearPlayer {
+    func sendToClear(clear: String) {
+        if clear == "clear" {
+            dismissSelf()
+        }
+    }
+    
+    
 }
