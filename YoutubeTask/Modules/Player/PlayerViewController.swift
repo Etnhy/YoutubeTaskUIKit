@@ -28,7 +28,6 @@ class PlayerViewController: UIViewController {
     let containerView: UIView = {
        var view = UIView()
         view.addGradient()
-        view.backgroundColor = .systemPink
         view.layer.cornerRadius = 12
         return view
     }()
@@ -133,6 +132,7 @@ class PlayerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.addGradient(colors: [.buttonGradientStart(), .buttonGradientEnd()])
         setPresenter()
         addGesture()
         configureView()

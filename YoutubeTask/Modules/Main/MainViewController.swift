@@ -15,15 +15,10 @@ protocol ClearPlayer: AnyObject {
 class MainViewController: UIViewController {
     
     var model = [FirstCellModel]()
-    
     var playerIsVisible: Bool = true
-    
     weak var clearPlayer: ClearPlayer?
-    
     var playerViewModel: ShowPlayerModel?
-    
     let playerVC = PlayerViewController(playerModel: ShowPlayerModel())
-    
     
     let mainTitle: UILabel = {
         var title = UILabel()
@@ -105,25 +100,27 @@ class MainViewController: UIViewController {
             self.view.layoutIfNeeded()
         }
     }
-    @objc fileprivate func hidePlayer() {
+    @objc  func hidePlayer() {
+        print("hide player")
+
 //        let v = UIScreen.
 //        UIView.animate(withDuration: 0.7) {
-//            player.view.snp.makeConstraints { make in
+//        sender.view.snp.makeConstraints { make in
 //                make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
-//                make.leading.trailing.equalTo(view)
-//                make.bottom.equalTo(view.snp.bottom).offset(0)
+//            make.leading.trailing.equalTo(self.view)
+//            make.bottom.equalTo(self.view.snp.bottom).offset(550)
 //
 //            }
 //        }
     }
-    fileprivate func showPlayer(model: ShowPlayerModel) {
+    
+    fileprivate func showPlayer(model: ShowPlayerModel) -> UIViewController {
         playerIsVisible.toggle()
 
         let player = PlayerViewController(playerModel: model)
         addChild(player)
         view.addSubview(player.view)
         player.didMove(toParent: self)
-        player.showViewButton.addTarget(self, action: #selector(hidePlayer), for: .touchUpInside)
         player.view.snp.makeConstraints { make in
             make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
             make.leading.trailing.equalTo(view)
@@ -132,6 +129,9 @@ class MainViewController: UIViewController {
         }
         
         self.view.layoutIfNeeded()
+        player.showViewButton.addTarget(self, action: #selector(hidePlayer), for: .touchUpInside)
+
+        return player
     }
     
     
@@ -228,6 +228,7 @@ extension MainViewController: SendUploads {
         self.playerViewModel = playerModel
         clearChildPlayer()
         showPlayer(model: playerModel)
+        print(children.count)
         //            self.addPlayerVC()
         
         //        showPlayer(model: playerModel)
