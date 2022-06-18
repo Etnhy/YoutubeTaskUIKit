@@ -19,7 +19,7 @@ class SecondPlaylistPresenter: SecondPlaylistViewProtocol {
     required init(view: SecondPlaylistProtocol, networkManager: NetworkManager) {
         self.view = view
         self.networkManager = networkManager
-//        setSecond()
+        setSecond()
     }
     
     func setSecond() {
@@ -30,7 +30,7 @@ class SecondPlaylistPresenter: SecondPlaylistViewProtocol {
                 case .success(let succes):
                     self?.welcome = succes.items
                     let model = self?.welcome?.compactMap({
-                        SecondCellModel(title: $0.snippet.title, image: $0.snippet.thumbnails.medium.url)
+                        SecondCellModel(title: $0.snippet.title, image: $0.snippet.thumbnails.medium.url, linkId: $0.snippet.resourceId.videoId, playlistId: $0.snippet.playlistId)
                     })
                     self?.view?.setSecondPlaylist(model: model!)
                 case .failure(let error):

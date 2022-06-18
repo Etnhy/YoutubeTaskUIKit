@@ -12,6 +12,8 @@ class FirstPlayerCollectionCell: UICollectionViewCell {
     
     static let identifier = "FirstPlayerCollectionCell"
     
+    var videoId: String = " "
+    var playlistId: String = " "
 
     
     let firstPlaylistImage: UIImageView = {
@@ -58,6 +60,10 @@ class FirstPlayerCollectionCell: UICollectionViewCell {
         self.nameLabel.text = model.title
         guard let urlImg = URL(string: model.image) else { return }
         self.firstPlaylistImage.af.setImage(withURL: urlImg)
+        self.videoId = model.linkId
+        
+        guard let playlisID = model.playlistId else { return }
+        self.playlistId = playlisID
     }
     
     func setViews(views: String) {

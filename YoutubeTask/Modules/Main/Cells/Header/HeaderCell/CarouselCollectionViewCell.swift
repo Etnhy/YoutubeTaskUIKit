@@ -14,7 +14,6 @@ class CarouselCollectionViewCell: UICollectionViewCell {
        var img = UIImageView()
         img.backgroundColor = .orange
         img.contentMode = .scaleAspectFill
-//        img.image = UIImage(named: "ttew.png")
         img.layer.cornerRadius = 8
         return img
     }()

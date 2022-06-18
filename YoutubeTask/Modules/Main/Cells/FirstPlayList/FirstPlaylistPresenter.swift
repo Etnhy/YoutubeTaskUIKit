@@ -19,7 +19,7 @@ class FirstPlaylistPresenter: FirstPlaylistViewProtocol {
     required init(view: FirstPlaylistProtocol, networkManager: NetworkManager) {
         self.view = view
         self.networkManager = networkManager
-//        setFirst()
+        setFirst()
     }
     
     
@@ -30,7 +30,7 @@ class FirstPlaylistPresenter: FirstPlaylistViewProtocol {
                 case .success(let succes):
                     self?.welcome = succes.items
                     let model = self?.welcome?.compactMap({
-                        FirstCellModel(title: $0.snippet.title, image: $0.snippet.thumbnails.medium.url)
+                        FirstCellModel(title: $0.snippet.title, image: $0.snippet.thumbnails.medium.url, linkId: $0.snippet.resourceId.videoId, playlistId: $0.snippet.playlistId)
                     })
                     self?.view?.setPlaylist(model: model!)
                 case .failure(let error):

@@ -8,14 +8,19 @@
 import UIKit
 import SnapKit
 
+protocol SendFromSecondPlaylist: AnyObject {
+    func sendSecond(playerModel: ShowPlayerModel)
+}
+
 class SecondPlaylist: UITableViewCell {
     
     var secondModel = [SecondCellModel]()
     var secondViewsArray: [String] = []
     let network = NetworkManager()
     var presenter: SecondPlaylistViewProtocol?
-//    var presenter: MainPlaylistViewPresenterProtocol?
-
+    
+    weak var sendFromSecond: SendFromSecondPlaylist?
+    
     let secondPlaylistName: UILabel = {
         var name = UILabel()
         name.text = "SecondPlaylist name"
@@ -90,6 +95,15 @@ extension SecondPlaylist: UICollectionViewDataSource {
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 160, height: 220)
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let linkLoad = secondModel[indexPath.row].linkId
+        let name = secondModel[indexPath.row].title
+        let playlistId = secondModel[indexPath.row].playlistId
+        let viewss = secondViewsArray[indexPath.row]
+        let playerModel = ShowPlayerModel(songTitle: name, viewsCount: viewss, playlistId: playlistId!, loadLink: linkLoad)
+        self.sendFromSecond?.sendSecond(playerModel: playerModel)
+
     }
     
 }

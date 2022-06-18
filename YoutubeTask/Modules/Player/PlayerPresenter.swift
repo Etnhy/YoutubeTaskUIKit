@@ -34,9 +34,4 @@ class PlayerPresenter: PlayerViewPresenterProtocol {
     
     
 }
-extension PlayerPresenter: SendVideoName {
-    func testcall(_ name: String) {
-        self.videoName = name
-        print(name)
-    }
-}
+

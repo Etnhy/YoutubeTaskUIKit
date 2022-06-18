@@ -9,19 +9,19 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-protocol SendVideoName: AnyObject {
-    func testcall(_ name: String)
+protocol SendFromFirstPlaylist: AnyObject {
+    func send(playerModel: ShowPlayerModel)
 }
 
 class FirstPlaylist: UITableViewCell {
     static let identifier = "FirstPlaylist"
     
     var model = [FirstCellModel]()
-    var delegate: SendVideoName!
     let network = NetworkManager()
     var presenter: FirstPlaylistViewProtocol?
     var viewsCont = [String]()
 
+   weak var sendId: SendFromFirstPlaylist?
     
     let firstPlaylistName: UILabel = {
         var name = UILabel()
@@ -81,26 +81,28 @@ class FirstPlaylist: UITableViewCell {
 extension FirstPlaylist: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4//model.count
+        return model.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FirstPlayerCollectionCell.identifier, for: indexPath) as? FirstPlayerCollectionCell else {
             return UICollectionViewCell()
         }
-//        cell.configure(with: model[indexPath.row])
-//
-//        if viewsCont.count == model.count {
-//            cell.setViews(views: viewsCont[indexPath.row])
-//        }
+        cell.configure(with: model[indexPath.row])
+
+        if viewsCont.count == model.count {
+            cell.setViews(views: viewsCont[indexPath.row])
+        }
         cell.backgroundColor = .clear
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let videoName = "GAGAGAGGAG"
-            
-        self.delegate?.testcall(videoName)
-        
+        let linkLoad = model[indexPath.row].linkId
+        let name = model[indexPath.row].title
+        let playlistId = model[indexPath.row].playlistId
+        let viewss = viewsCont[indexPath.row]
+        let playerModel = ShowPlayerModel(songTitle: name, viewsCount: viewss, playlistId: playlistId!, loadLink: linkLoad)
+        self.sendId?.send(playerModel: playerModel)
     }
 }
 

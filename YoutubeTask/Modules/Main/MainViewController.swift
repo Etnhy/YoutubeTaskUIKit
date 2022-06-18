@@ -13,8 +13,10 @@ class MainViewController: UIViewController {
     var model = [FirstCellModel]()
     
     var playerIsVisible: Bool = false
-    let playerVC = PlayerViewController(songTitle: " ", viewsCount: " ")
+
+    var playerViewModel = ShowPlayerModel()
     
+
     
     let mainTitle: UILabel = {
         var title = UILabel()
@@ -36,9 +38,11 @@ class MainViewController: UIViewController {
         return table
     }()
     
-    let showPlayerButton: UIButton = {
-        var button = UIButton()
-        button.backgroundColor = .systemPink
+    lazy var showPlayerButton: ShowPlayerViewButton = {
+        var button = ShowPlayerViewButton()
+//        button.backgroundColor = .systemPink
+        button.showButton.addTarget(self, action: #selector(showPlayerAction(_:)), for: .touchUpInside)
+
         return button
     }()
     
@@ -46,28 +50,25 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .black
         addSubviews()
-        
-//        Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(showPlayer), userInfo: nil, repeats: false)
+
     }
-    
-    
+
     fileprivate func addSubviews() {
         view.addSubview(mainTitle)
         view.addSubview(table)
         view.addSubview(showPlayerButton)
-//        addPlayerVC()
-        
-        
+
         activateConstraints()
     }
+    // MARK: -  Actions
     
-    func addPlayerVC() {
-        addChild(playerVC)
-        view.addSubview(playerVC.view)
-        playerVC.didMove(toParent: self)
-        playerVC.showViewButton.addTarget(self, action: #selector(changePlayerPostion(_:)), for: .touchUpInside)
-        
+    @objc fileprivate func showPlayerAction(_ sender: UIButton) {
+//        print("tap")
+//        self.showPlayerButton.isHidden = true
+        let player = PlayerViewController(playerModel: playerViewModel)
+        navigationController?.present(player, animated: true)
     }
+
     fileprivate func activateConstraints() {
 //        playerVC.view.snp.makeConstraints { make in
 //            make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
@@ -91,31 +92,6 @@ class MainViewController: UIViewController {
         }
         
     }
-    @objc
-    fileprivate func changePlayerPostion(_ sender: UIButton) {
-        playerIsVisible.toggle()
-        UIView.animate(withDuration: 0.7) {
-            self.playerVC.view.snp.updateConstraints { make in
-                make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
-                make.leading.trailing.equalTo(self.view)
-                make.bottom.equalTo(self.view.snp.bottom).offset(self.playerIsVisible ? 0 : 550)
-            }
-            self.view.layoutIfNeeded()
-        }
-    }
-    @objc
-    func showPlayer() {
-        playerIsVisible.toggle()
-        playerVC.playerIsVisible.toggle()
-        UIView.animate(withDuration: 0.7) {
-            self.playerVC.view.snp.updateConstraints { make in
-                make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
-                make.leading.trailing.equalTo(self.view)
-                make.bottom.equalTo(self.view.snp.bottom).offset(0)
-            }
-            self.view.layoutIfNeeded()
-        }
-    }
 }
 
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
@@ -125,17 +101,32 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell: UITableViewCell?
-        
-        if indexPath.row % 2 == 0 {
-            cell = tableView.dequeueReusableCell(withIdentifier: FirstPlaylist.identifier, for: indexPath)
-            cell?.backgroundColor = .black
-        } else {
-            cell = tableView.dequeueReusableCell(withIdentifier: SecondPlaylist.identifier, for: indexPath)
-            cell?.backgroundColor = .black
+//        var cell: UITableViewCell?
+//
+//        if indexPath.row % 2 == 0 {
+//            cell = tableView.dequeueReusableCell(withIdentifier: FirstPlaylist.identifier, for: indexPath)
+//            cell?.backgroundColor = .black
+//        } else {
+//            cell = tableView.dequeueReusableCell(withIdentifier: SecondPlaylist.identifier, for: indexPath)
+//            cell?.backgroundColor = .black
+//        }
+//        cell?.selectionStyle = .none
+//        return cell!
+        switch indexPath.row {
+        case 0:
+            let cell = tableView.dequeueReusableCell(withIdentifier: FirstPlaylist.identifier, for: indexPath) as! FirstPlaylist
+            cell.sendId = self
+            cell.backgroundColor = .black
+            return cell
+        case 1:
+            let cell = tableView.dequeueReusableCell(withIdentifier: SecondPlaylist.identifier, for: indexPath) as! SecondPlaylist
+            cell.backgroundColor = .black
+            cell.sendFromSecond = self
+            return cell
+        default: break
+            //
         }
-        cell?.selectionStyle = .none
-        return cell!
+        return UITableViewCell()
     }
     
     
@@ -152,17 +143,41 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderTableView.identifier) as? HeaderTableView else {
             return UITableViewHeaderFooterView()
         }
+        header.sendUpload = self
         return header
     }
     
 }
 
-extension MainViewController: SendVideoName {
-    func testcall(_ name: String) {
-        print(name)
-        DispatchQueue.main.async {
-            print(name)
+extension MainViewController: ShowButtonDelegate {
+    func setShow(_ bool: Bool) {
+        self.showPlayerButton.isHidden = bool
+        print(bool)
+    }
 
-        }
+}
+extension MainViewController: SendUploads {
+    func sendUploads(playerModel: ShowPlayerModel) {
+        let player = PlayerViewController(playerModel: playerModel)
+        print(playerModel)
+        self.navigationController?.present(player, animated: true)
+    }
+}
+// MARK: - from first playlist
+extension MainViewController: SendFromFirstPlaylist {
+    func send(playerModel: ShowPlayerModel) {
+        self.playerViewModel = playerModel
+        
+        let player = PlayerViewController(playerModel: playerModel)
+        self.navigationController?.present(player, animated: true)
+    }
+}
+// MARK: - from second playlist
+extension MainViewController: SendFromSecondPlaylist {
+    func sendSecond(playerModel: ShowPlayerModel) {
+        self.playerViewModel = playerModel
+        let player = PlayerViewController(playerModel: playerModel)
+        self.navigationController?.present(player, animated: true)
+
     }
 }

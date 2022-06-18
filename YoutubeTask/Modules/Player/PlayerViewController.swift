@@ -8,11 +8,16 @@
 import UIKit
 import youtube_ios_player_helper
 
+protocol ShowButtonDelegate: AnyObject {
+    func setShow(_ bool: Bool)
+}
 class PlayerViewController: UIViewController {
 
     let buttonName = ["Prev","Play","Next"]
     var playerIsVisible: Bool = true
     var playVideos: Bool = false
+    
+    weak var delegate: ShowButtonDelegate?
     
     var presenter: PlayerViewPresenterProtocol?
     var videoNameText: String = "" {
@@ -20,13 +25,21 @@ class PlayerViewController: UIViewController {
             self.videoName.text = videoNameText
         }
     }
+    let containerView: UIView = {
+       var view = UIView()
+        view.addGradient()
+        view.backgroundColor = .systemPink
+        view.layer.cornerRadius = 12
+        return view
+    }()
     
     lazy var showViewButton: UIButton = {
         var button = UIButton(type: .system)
         var config = UIButton.Configuration.plain()
-        config.image = UIImage(named: "Close_Open")?.rotated(byDegrees: 180)
+        config.image = UIImage(named: "Close_Open")
         button.configuration = config
         button.addTarget(self, action: #selector(imageChanger), for: .touchUpInside)
+        button.addTarget(self, action: #selector(dismissSelf), for: .touchUpInside)
         button.layer.cornerRadius = 18
         button.clipsToBounds = true
         return button
@@ -35,7 +48,7 @@ class PlayerViewController: UIViewController {
     lazy var playerView: YTPlayerView = {
        var view = YTPlayerView()
 //        view.load(withVideoId: "GJzUu8ZjsCA")
-        view.load(withPlaylistId: Configuration.Playlists.first)
+//        view.load(withPlaylistId: Configuration.Playlists.first)
         view.backgroundColor = .black
         return view
     }()
@@ -99,11 +112,19 @@ class PlayerViewController: UIViewController {
         return slider
     }()
    
+    let uploadLink: String = ""
+    var playerModel: ShowPlayerModel?
     
-     init(songTitle: String, viewsCount: String) {
+    init(playerModel: ShowPlayerModel) {
          super.init(nibName: nil, bundle: nil)
-         self.videoName.text = songTitle
-         self.viewsCount.text = "\(viewsCount) просмотра"
+        self.playerModel = playerModel
+        
+        self.videoName.text = playerModel.songTitle
+        self.viewsCount.text = "\(playerModel.viewsCount) просмотра"
+        
+        if !playerModel.playlistId.isEmpty {
+            playerView.load(withPlaylistId: playerModel.playlistId)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -113,8 +134,10 @@ class PlayerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setPresenter()
+        addGesture()
         configureView()
 //        setProgress()
+//        self.delegate = self
         Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(setProgress), userInfo: nil, repeats: true)
     }
     
@@ -131,16 +154,21 @@ class PlayerViewController: UIViewController {
     fileprivate func configureView() {
         self.view.layer.cornerRadius = 18
         self.view.clipsToBounds = true
-        view.addSubview(showViewButton)
-        view.addSubview(progressView)
-        view.addSubview(playerView)
-        view.addSubview(videoName)
-        view.addSubview(viewsCount)
-        view.addSubview(buttonStackView)
-        view.addSubview(volumeSlider)
-        view.addGradient(colors: [UIColor.buttonGradientStart(), UIColor.buttonGradientEnd()])
+        self.view.backgroundColor = .clear
+        view.addSubview(containerView)
+        
+        
+        containerView.addSubview(showViewButton)
+        containerView.addSubview(progressView)
+        containerView.addSubview(playerView)
+        containerView.addSubview(videoName)
+        containerView.addSubview(viewsCount)
+        containerView.addSubview(buttonStackView)
+        containerView.addSubview(volumeSlider)
+        containerView.addGradient(colors: [UIColor.buttonGradientStart(), UIColor.buttonGradientEnd()])
         activateConstraints()
     }
+    // MARK: -  Actions
     @objc func buttonPlayerActions(_ sender: UIButton) {
         switch sender.tag {
         case 0:
@@ -157,11 +185,22 @@ class PlayerViewController: UIViewController {
                 playerView.pauseVideo()
             }
         case 2:
+            
             playerView.nextVideo()
         default: break
         }
     }
     
+        // MARK: -  Actions
+    
+    @objc private func addGesture() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        tap.delegate = self
+        self.view.addGestureRecognizer(tap)
+    }
+    @objc func handleTap(_ sender: UITapGestureRecognizer?) {
+            self.dismiss(animated: true, completion: nil)
+    }
     @objc func imageChanger() {
         playerIsVisible.toggle()
         var config = UIButton.Configuration.plain()
@@ -169,13 +208,26 @@ class PlayerViewController: UIViewController {
         
         showViewButton.configuration = config
     }
+    
+    @objc func dismissSelf() {
+        playerIsVisible.toggle()
+        self.delegate?.setShow(false)
+        self.dismiss(animated: true)
+    }
     @objc func changeVolume(_ sender: UISlider) {
         
     }
     fileprivate func activateConstraints() {
 
+        containerView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(view)
+            make.bottom.equalTo(view)
+            make.height.equalTo(600)
+
+        }
+        
         showViewButton.snp.makeConstraints { make in
-            make.top.equalTo(view).offset(6)
+            make.top.equalTo(containerView)
             make.leading.trailing.equalTo(view)
             make.height.equalTo(40)
         }
@@ -221,6 +273,11 @@ extension PlayerViewController: PlayerPresenterProtocol {
     func setPlayer() {
         ///
     }
-    
-    
+}
+
+//MARK: - UIGestureRecognizerDelegate
+extension PlayerViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        return touch.view == gestureRecognizer.view
+    }
 }

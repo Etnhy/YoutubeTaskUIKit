@@ -16,7 +16,7 @@ class HeaderPresenter: HeaderViewProtocol {
     required init(view: HeaderProtocol, networkManager: NetworkManager) {
         self.view = view
         self.networkManager = networkManager
-//        setChannels()
+        setChannels()
     }
     
     func setChannels() {
@@ -25,7 +25,8 @@ class HeaderPresenter: HeaderViewProtocol {
                     case .success(let channels):
                         self?.youtubeChannelItems = channels.items
                         let model = self?.youtubeChannelItems?.compactMap({
-                            HeaderModel(channelNames: $0.snippet.title, subscribersCount: $0.statistics.subscriberCount, channelImgage: $0.snippet.thumbnails.high.url, playlist: $0.contentDetails.relatedPlaylists.uploads)
+                            HeaderModel(channelNames: $0.snippet.title, subscribersCount: $0.statistics.subscriberCount, channelImgage: $0.snippet.thumbnails.high.url,
+                                        playlist: $0.contentDetails.relatedPlaylists.uploads)
                         })
                         self?.view?.setHeader(model: model!)
                     case .failure(let error):
