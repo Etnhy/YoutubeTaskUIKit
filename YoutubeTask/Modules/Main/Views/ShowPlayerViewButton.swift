@@ -47,21 +47,20 @@ class ShowPlayerViewButton: UIView {
     // MARK: - Setup view
     private func setupView() {
         self.backgroundColor = .systemPink
-        
         addSubviews()
     }
+    
     // MARK: - AddSubviews
     private func addSubviews() {
         addSubview(showButton)
-        
         activateConstraints()
     }
+    
     // MARK: -  Actions
     @objc fileprivate func changeStateButton() {
         buttonIsTapped.toggle()
         var config = UIButton.Configuration.plain()
         config.image = buttonIsTapped ? UIImage(named: "Close_Open")?.rotated(byDegrees: 180) : UIImage(named: "Close_Open")
-        
         showButton.configuration = config
     }
     
@@ -70,10 +69,7 @@ class ShowPlayerViewButton: UIView {
         showButton.snp.makeConstraints { make in
             make.centerX.equalTo(self)
             make.top.equalTo(self)
-//            make.centerY.equalTo(self)
             make.size.equalTo(CGSize(width: 40, height: 40))
         }
     }
-    
-
 }

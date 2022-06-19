@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - First playlist presenter protocols
 protocol FirstPlaylistProtocol: AnyObject {
     func setPlaylist(model: [FirstCellModel])
     func setViews(count views: [String])
@@ -19,4 +20,9 @@ protocol FirstPlaylistViewProtocol: AnyObject {
     
     func setFirst()
     func setFirstViews()
+}
+
+// MARK: -  Send from first playlis
+protocol SendFromFirstPlaylist: AnyObject {
+    func send(playerModel: ShowPlayerModel)
 }

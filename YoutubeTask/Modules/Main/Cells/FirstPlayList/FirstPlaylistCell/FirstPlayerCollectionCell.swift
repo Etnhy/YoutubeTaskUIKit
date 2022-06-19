@@ -11,10 +11,8 @@ import AlamofireImage
 class FirstPlayerCollectionCell: UICollectionViewCell {
     
     static let identifier = "FirstPlayerCollectionCell"
-    
     var videoId: String = " "
     var playlistId: String = " "
-
     
     let firstPlaylistImage: UIImageView = {
         var view = UIImageView()
@@ -37,7 +35,6 @@ class FirstPlayerCollectionCell: UICollectionViewCell {
     
     let viewsCount: UILabel = {
         var label = UILabel()
-//        label.text = "123312412 "
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.textColor = .gray
         return label
@@ -61,7 +58,6 @@ class FirstPlayerCollectionCell: UICollectionViewCell {
         guard let urlImg = URL(string: model.image) else { return }
         self.firstPlaylistImage.af.setImage(withURL: urlImg)
         self.videoId = model.linkId
-        
         guard let playlisID = model.playlistId else { return }
         self.playlistId = playlisID
     }

@@ -6,7 +6,6 @@
 //
 
 import Foundation
-//import YoutubeDataKit
 
 
 // MARK: - YoutubeVideoResponse
@@ -15,7 +14,6 @@ struct YoutubeVideoResponse: Codable {
     var etag:   String
     var items:  [VideoItems]
     var pageInfo: VideoPageInfo
-    
 }
 
 // MARK: - VideoItems

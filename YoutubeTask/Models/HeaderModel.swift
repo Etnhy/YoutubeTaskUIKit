@@ -7,7 +7,7 @@
 
 import Foundation
 
-
+// MARK:  Header Model
 struct HeaderModel {
     var channelNames: String
     var subscribersCount: String

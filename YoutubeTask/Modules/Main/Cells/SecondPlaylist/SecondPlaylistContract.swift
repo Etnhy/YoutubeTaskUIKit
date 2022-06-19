@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - Second playlist protocols
 protocol SecondPlaylistProtocol: AnyObject {
     func setSecondPlaylist(model: [SecondCellModel])
     func setSecondViews(count views: [String])
@@ -19,4 +20,9 @@ protocol SecondPlaylistViewProtocol: AnyObject {
     
     func setSecond()
     func setSecondViews()
+}
+
+// MARK: - From second playlist
+protocol SendFromSecondPlaylist: AnyObject {
+    func sendSecond(playerModel: ShowPlayerModel)
 }

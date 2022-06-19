@@ -19,19 +19,20 @@ class HeaderPresenter: HeaderViewProtocol {
         setChannels()
     }
     
+    // MARK: - Set Channels
     func setChannels() {
-                networkManager.getChannels { [weak self] result in
-                    switch result {
-                    case .success(let channels):
-                        self?.youtubeChannelItems = channels.items
-                        let model = self?.youtubeChannelItems?.compactMap({
-                            HeaderModel(channelNames: $0.snippet.title, subscribersCount: $0.statistics.subscriberCount, channelImgage: $0.snippet.thumbnails.high.url,
-                                        playlist: $0.contentDetails.relatedPlaylists.uploads)
-                        })
-                        self?.view?.setHeader(model: model!)
-                    case .failure(let error):
-                        print(error)
-                    }
-                }
+        networkManager.getChannels { [weak self] result in
+            switch result {
+            case .success(let channels):
+                self?.youtubeChannelItems = channels.items
+                let model = self?.youtubeChannelItems?.compactMap({
+                    HeaderModel(channelNames: $0.snippet.title, subscribersCount: $0.statistics.subscriberCount, channelImgage: $0.snippet.thumbnails.high.url,
+                                playlist: $0.contentDetails.relatedPlaylists.uploads)
+                })
+                self?.view?.setHeader(model: model!)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }

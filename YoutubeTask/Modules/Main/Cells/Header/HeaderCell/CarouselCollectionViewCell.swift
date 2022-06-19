@@ -9,6 +9,8 @@ import UIKit
 import AlamofireImage
 
 class CarouselCollectionViewCell: UICollectionViewCell {
+    static let identifier = "CarouselCollectionViewCell"
+    var uploads: String = ""
     
     let bannerImage: UIImageView = {
        var img = UIImageView()
@@ -17,8 +19,6 @@ class CarouselCollectionViewCell: UICollectionViewCell {
         img.layer.cornerRadius = 8
         return img
     }()
-    
-    var uploads: String = ""
 
     let albumName: UILabel = {
        var albumName = UILabel()
@@ -43,11 +43,8 @@ class CarouselCollectionViewCell: UICollectionViewCell {
         configuration.cornerStyle = .capsule
         configuration.background.backgroundColor = .purple
         button.configuration = configuration
-        
         return button
     }()
-    
-    static let identifier = "CarouselCollectionViewCell"
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -60,15 +57,13 @@ class CarouselCollectionViewCell: UICollectionViewCell {
     
     func addSubviews() {
         self.layer.cornerRadius = 8
-
         addSubview(bannerImage)
         addSubview(albumName)
         addSubview(subscribersCount)
         addSubview(playButton)
-//        setupGradientButton()
-
         activateConstraints()
     }
+    
     func configure(with model: HeaderModel) {
         self.albumName.text = model.channelNames
         self.subscribersCount.text = "\(model.subscribersCount) подписчика."
@@ -99,5 +94,4 @@ class CarouselCollectionViewCell: UICollectionViewCell {
             make.size.equalTo(CGSize(width: 70, height: 70))
         }
     }
-    
 }

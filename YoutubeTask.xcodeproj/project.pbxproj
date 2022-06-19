@@ -23,7 +23,7 @@
 		603E46A8285BBD3500563C0E /* YoutubeChannelsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603E46A7285BBD3500563C0E /* YoutubeChannelsModel.swift */; };
 		603E46AA285BD04A00563C0E /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603E46A9285BD04A00563C0E /* UIView+Extension.swift */; };
 		605C6098285B404A004DA484 /* YoutubeVideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605C6097285B404A004DA484 /* YoutubeVideoModel.swift */; };
-		605C609A285B42EA004DA484 /* FirstCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605C6099285B42EA004DA484 /* FirstCellModel.swift */; };
+		605C609A285B42EA004DA484 /* First+SecondPlaylistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605C6099285B42EA004DA484 /* First+SecondPlaylistModel.swift */; };
 		60A00A5C285904AB00B43FFA /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A00A5B285904AB00B43FFA /* UIColor+Extension.swift */; };
 		60A00A5E28590BEA00B43FFA /* FirstPlayerCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A00A5D28590BEA00B43FFA /* FirstPlayerCollectionCell.swift */; };
 		60B2D6E128589DDE000A9D43 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B2D6E028589DDE000A9D43 /* AppDelegate.swift */; };
@@ -36,6 +36,7 @@
 		60B562EB285A14C500215FE0 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B562EA285A14C500215FE0 /* NetworkManager.swift */; };
 		60B562EE285A6B4C00215FE0 /* YoutubePlaylistModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B562ED285A6B4C00215FE0 /* YoutubePlaylistModel.swift */; };
 		60B562F2285A7E0800215FE0 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B562F1285A7E0800215FE0 /* Configuration.swift */; };
+		60B969D2285E66C700005842 /* NetworkContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B969D1285E66C700005842 /* NetworkContract.swift */; };
 		60ED48DB2859F61900FF0C64 /* SecondPlayerCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ED48DA2859F61900FF0C64 /* SecondPlayerCollectionCell.swift */; };
 		60ED48DE285A024C00FF0C64 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ED48DD285A024C00FF0C64 /* PlayerViewController.swift */; };
 		60F48B2B285B5F8D00E6DA48 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F48B2A285B5F8D00E6DA48 /* UIImage+Extension.swift */; };
@@ -59,7 +60,7 @@
 		603E46A7285BBD3500563C0E /* YoutubeChannelsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeChannelsModel.swift; sourceTree = "<group>"; };
 		603E46A9285BD04A00563C0E /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		605C6097285B404A004DA484 /* YoutubeVideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeVideoModel.swift; sourceTree = "<group>"; };
-		605C6099285B42EA004DA484 /* FirstCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstCellModel.swift; sourceTree = "<group>"; };
+		605C6099285B42EA004DA484 /* First+SecondPlaylistModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "First+SecondPlaylistModel.swift"; sourceTree = "<group>"; };
 		60A00A5B285904AB00B43FFA /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		60A00A5D28590BEA00B43FFA /* FirstPlayerCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstPlayerCollectionCell.swift; sourceTree = "<group>"; };
 		60B2D6DD28589DDE000A9D43 /* YoutubeTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YoutubeTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,6 +75,7 @@
 		60B562EA285A14C500215FE0 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		60B562ED285A6B4C00215FE0 /* YoutubePlaylistModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubePlaylistModel.swift; sourceTree = "<group>"; };
 		60B562F1285A7E0800215FE0 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		60B969D1285E66C700005842 /* NetworkContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkContract.swift; sourceTree = "<group>"; };
 		60ED48DA2859F61900FF0C64 /* SecondPlayerCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondPlayerCollectionCell.swift; sourceTree = "<group>"; };
 		60ED48DD285A024C00FF0C64 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		60F48B2A285B5F8D00E6DA48 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
@@ -138,13 +140,6 @@
 			path = FirstPlaylistCell;
 			sourceTree = "<group>";
 		};
-		603BEB04285D1E910024B0B2 /* utils */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = utils;
-			sourceTree = "<group>";
-		};
 		603BEB05285D1EA00024B0B2 /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -193,15 +188,13 @@
 		60B2D6DF28589DDE000A9D43 /* YoutubeTask */ = {
 			isa = PBXGroup;
 			children = (
+				60B969D3285E6ABD00005842 /* Utls */,
 				60A00A582859048000B43FFA /* Extension */,
 				603BEB05285D1EA00024B0B2 /* App */,
 				60B562EC285A154F00215FE0 /* Models */,
 				60B562E9285A14B900215FE0 /* Network */,
 				60B2D6F82858B16B000A9D43 /* Modules */,
-				603BEB04285D1E910024B0B2 /* utils */,
-				60B2D6E928589DE0000A9D43 /* Assets.xcassets */,
 				60B2D6EB28589DE0000A9D43 /* LaunchScreen.storyboard */,
-				60B2D6EE28589DE0000A9D43 /* Info.plist */,
 			);
 			path = YoutubeTask;
 			sourceTree = "<group>";
@@ -249,6 +242,7 @@
 		60B562E9285A14B900215FE0 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				60B969D1285E66C700005842 /* NetworkContract.swift */,
 				60B562EA285A14C500215FE0 /* NetworkManager.swift */,
 				60B562F1285A7E0800215FE0 /* Configuration.swift */,
 			);
@@ -260,12 +254,21 @@
 			children = (
 				60B562ED285A6B4C00215FE0 /* YoutubePlaylistModel.swift */,
 				605C6097285B404A004DA484 /* YoutubeVideoModel.swift */,
-				605C6099285B42EA004DA484 /* FirstCellModel.swift */,
+				605C6099285B42EA004DA484 /* First+SecondPlaylistModel.swift */,
 				603E46A7285BBD3500563C0E /* YoutubeChannelsModel.swift */,
 				603BEAF4285C95740024B0B2 /* HeaderModel.swift */,
 				603B5EF3285D4A5500C98505 /* ShowPlayerModel.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		60B969D3285E6ABD00005842 /* Utls */ = {
+			isa = PBXGroup;
+			children = (
+				60B2D6E928589DE0000A9D43 /* Assets.xcassets */,
+				60B2D6EE28589DE0000A9D43 /* Info.plist */,
+			);
+			path = Utls;
 			sourceTree = "<group>";
 		};
 		60ED48DC2859FCBC00FF0C64 /* Player */ = {
@@ -413,13 +416,14 @@
 				603BEB01285D1B960024B0B2 /* SecondPlaylistPresenter.swift in Sources */,
 				603BEAFC285D17AD0024B0B2 /* FirstPlaylistPresenter.swift in Sources */,
 				603BEAF5285C95740024B0B2 /* HeaderModel.swift in Sources */,
-				605C609A285B42EA004DA484 /* FirstCellModel.swift in Sources */,
+				605C609A285B42EA004DA484 /* First+SecondPlaylistModel.swift in Sources */,
 				603B28B42858F92000ADE45D /* SecondPlaylist.swift in Sources */,
 				603BEB09285D206B0024B0B2 /* PlayerPresenter.swift in Sources */,
 				603BEB03285D1DA00024B0B2 /* SecondPlaylistContract.swift in Sources */,
 				603BEAF7285D14CD0024B0B2 /* HeaderPresenter.swift in Sources */,
 				60B562EE285A6B4C00215FE0 /* YoutubePlaylistModel.swift in Sources */,
 				60ED48DE285A024C00FF0C64 /* PlayerViewController.swift in Sources */,
+				60B969D2285E66C700005842 /* NetworkContract.swift in Sources */,
 				603BEAF9285D17570024B0B2 /* HeaderContract.swift in Sources */,
 				60A00A5C285904AB00B43FFA /* UIColor+Extension.swift in Sources */,
 				603B5EF1285D280500C98505 /* ShowPlayerViewButton.swift in Sources */,
@@ -580,7 +584,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 876GZYDWFS;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = YoutubeTask/Info.plist;
+				INFOPLIST_FILE = YoutubeTask/Utils/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -611,7 +615,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 876GZYDWFS;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = YoutubeTask/Info.plist;
+				INFOPLIST_FILE = YoutubeTask/Utils/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

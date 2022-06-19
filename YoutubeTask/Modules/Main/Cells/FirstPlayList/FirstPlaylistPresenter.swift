@@ -11,7 +11,6 @@ import Foundation
 class FirstPlaylistPresenter: FirstPlaylistViewProtocol {
     
     var firstViewsArray: [String] = []
-    
     var welcome: [Items]?
 
     weak var view: FirstPlaylistProtocol?

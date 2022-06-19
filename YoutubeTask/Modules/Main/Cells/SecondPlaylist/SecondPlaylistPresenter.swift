@@ -12,7 +12,6 @@ class SecondPlaylistPresenter: SecondPlaylistViewProtocol {
 
     var secondViewsArray: [String] = []
     var welcome: [Items]?
-
     weak var view: SecondPlaylistProtocol?
     var networkManager: NetworkManager!
     
@@ -53,12 +52,7 @@ class SecondPlaylistPresenter: SecondPlaylistViewProtocol {
                 case .failure(let error):
                     print(error)
                 }
-
             }
         }
-
     }
-    
-    
-    
 }

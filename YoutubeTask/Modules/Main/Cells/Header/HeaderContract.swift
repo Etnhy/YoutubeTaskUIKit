@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - Header presenter protocols
 protocol HeaderProtocol: AnyObject {
     func setHeader(model: [HeaderModel])
 }
@@ -15,4 +16,9 @@ protocol HeaderViewProtocol: AnyObject {
     init(view:HeaderProtocol,networkManager: NetworkManager)
     var youtubeChannelItems: [YoutubeChannelItems]? { get set }
     func setChannels()
+}
+
+// MARK: - SendUpload id
+protocol SendUploads: AnyObject {
+    func sendUploads(playerModel: ShowPlayerModel)
 }

@@ -13,18 +13,18 @@ protocol ShowButtonDelegate: AnyObject {
 }
 class PlayerViewController: UIViewController {
 
+    weak var delegate: ShowButtonDelegate?
+    var presenter: PlayerViewPresenterProtocol?
+
     let buttonName = ["Prev","Play","Next"]
     var playerIsVisible: Bool = true
-    var playVideos: Bool = false
-    var clear: ClearPlayer!
-    weak var delegate: ShowButtonDelegate?
-    
-    var presenter: PlayerViewPresenterProtocol?
+    var playVideos:      Bool = false
     var videoNameText: String = "" {
         willSet {
             self.videoName.text = videoNameText
         }
     }
+
     let containerView: UIView = {
        var view = UIView()
         view.addGradient()
@@ -38,7 +38,6 @@ class PlayerViewController: UIViewController {
         config.image = UIImage(named: "Close_Open")?.rotated(byDegrees: 180)
         button.configuration = config
         button.addTarget(self, action: #selector(imageChanger), for: .touchUpInside)
-        button.addTarget(self, action: #selector(dismissSelf), for: .touchUpInside)
         button.layer.cornerRadius = 18
         button.clipsToBounds = true
         return button
@@ -46,8 +45,6 @@ class PlayerViewController: UIViewController {
     
     lazy var playerView: YTPlayerView = {
        var view = YTPlayerView()
-//        view.load(withVideoId: "GJzUu8ZjsCA")
-//        view.load(withPlaylistId: Configuration.Playlists.first)
         view.backgroundColor = .black
         return view
     }()
@@ -117,10 +114,8 @@ class PlayerViewController: UIViewController {
     init(playerModel: ShowPlayerModel) {
          super.init(nibName: nil, bundle: nil)
         self.playerModel = playerModel
-        
         self.videoName.text = playerModel.songTitle
         self.viewsCount.text = "\(playerModel.viewsCount) просмотра"
-        
         if !playerModel.playlistId.isEmpty {
             playerView.load(withPlaylistId: playerModel.playlistId)
         }
@@ -134,24 +129,14 @@ class PlayerViewController: UIViewController {
         super.viewDidLoad()
         self.view.addGradient(colors: [.buttonGradientStart(), .buttonGradientEnd()])
         setPresenter()
-        addGesture()
         configureView()
-        self.clear = self
-//        setProgress()
-//        self.delegate = self
         Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(setProgress), userInfo: nil, repeats: true)
     }
-    
-   @objc func setProgress() {
-       playerView.currentTime()
-       self.playerView.currentTime { progress, _ in
-           self.progressView.setProgress(progress / 261, animated: true)
-       }
-        
-    }
+
     fileprivate func setPresenter() {
         self.presenter = PlayerPresenter(view: self)
     }
+    
     fileprivate func configureView() {
         self.view.layer.cornerRadius = 18
         self.view.clipsToBounds = true
@@ -169,14 +154,22 @@ class PlayerViewController: UIViewController {
         containerView.addGradient(colors: [UIColor.buttonGradientStart(), UIColor.buttonGradientEnd()])
         activateConstraints()
     }
+    
     // MARK: -  Actions
+    
+   @objc func setProgress() {
+       playerView.currentTime()
+       self.playerView.currentTime { progress, _ in
+           self.progressView.setProgress(progress / 261, animated: true)
+       }
+    }
+    
     @objc func buttonPlayerActions(_ sender: UIButton) {
         switch sender.tag {
         case 0:
             playerView.previousVideo()
         case 1:
             playVideos.toggle()
-
             var config = UIButton.Configuration.plain()
             config.image = playVideos ? UIImage(named: "Pause") : UIImage(named: "Play")
             playerButtons[1].configuration = config
@@ -186,22 +179,23 @@ class PlayerViewController: UIViewController {
                 playerView.pauseVideo()
             }
         case 2:
-            
             playerView.nextVideo()
         default: break
         }
     }
-    
+    // MARK: -  configure
+    func configure(playerModel: ShowPlayerModel) {
+        self.playerModel = playerModel
+        
+        self.videoName.text = playerModel.songTitle
+        self.viewsCount.text = "\(playerModel.viewsCount) просмотра"
+        
+        playerView.load(withVideoId: playerModel.loadLink)
+        playerView.load(withPlaylistId: playerModel.playlistId)
+    }
+
         // MARK: -  Actions
     
-    @objc private func addGesture() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-        tap.delegate = self
-        self.view.addGestureRecognizer(tap)
-    }
-    @objc func handleTap(_ sender: UITapGestureRecognizer?) {
-            self.dismiss(animated: true, completion: nil)
-    }
     @objc func imageChanger() {
         playerIsVisible.toggle()
         var config = UIButton.Configuration.plain()
@@ -210,77 +204,15 @@ class PlayerViewController: UIViewController {
         showViewButton.configuration = config
     }
     
-    @objc func dismissSelf() {
-        
-//        self.delegate?.setShow(true)
-//        if self.parent!.children.count > 0 {
-//            let mainChildren = self.parent!.children
-//
-//            mainChildren.forEach { child in
-//                let childName = String(describing: child.self)
-//                let currentVCName = String(describing: self)
-//
-//                if childName == currentVCName {
-//                    child.willMove(toParent: nil)
-//                    child.view.removeFromSuperview()
-//                    child.removeFromParent()
-//
-//                }
-//            }
-//        }
-
-//        if parent!.children.count > 0 {
-//            let mainChildren = parent!.children
-//
-//            mainChildren.forEach { child in
-//                let childName = String(describing: child.self)
-//                let currentVCName = String(describing: self)
-//
-//                if childName == currentVCName {
-//                    child.willMove(toParent: nil)
-//                    child.view.removeFromSuperview()
-//                    child.removeFromParent()
-//
-//                }
-//            }
-//        }
-
-//        playerIsVisible.toggle()
-//        UIView.animate(withDuration: 0.7) {
-//            self.view.snp.makeConstraints { make in
-//                make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
-//                make.leading.trailing.equalTo(self.view)
-//                make.bottom.equalTo(self.view.snp.bottom).offset(550)
-//            }
-//        } completion: { _ in
-//            if self.parent!.children.count > 0 {
-//                let mainChildren = self.parent!.children
-//
-//                mainChildren.forEach { child in
-//                    let childName = String(describing: child.self)
-//                    let currentVCName = String(describing: self)
-//
-//                    if childName == currentVCName {
-//                        child.willMove(toParent: nil)
-//                        child.view.removeFromSuperview()
-//                        child.removeFromParent()
-//
-//                    }
-//                }
-//            }
-//        }
-    }
-    
     @objc func changeVolume(_ sender: UISlider) {
         
     }
+    // MARK: -  Constraints
     fileprivate func activateConstraints() {
-
         containerView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(view)
             make.bottom.equalTo(view)
             make.height.equalTo(600)
-
         }
         
         showViewButton.snp.makeConstraints { make in
@@ -325,7 +257,7 @@ class PlayerViewController: UIViewController {
         }
     }
 }
-
+// MARK: - PlayerPresenterProtocol
 extension PlayerViewController: PlayerPresenterProtocol {
     func setPlayer() {
         ///
@@ -337,13 +269,4 @@ extension PlayerViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         return touch.view == gestureRecognizer.view
     }
-}
-extension PlayerViewController: ClearPlayer {
-    func sendToClear(clear: String) {
-        if clear == "clear" {
-            dismissSelf()
-        }
-    }
-    
-    
 }

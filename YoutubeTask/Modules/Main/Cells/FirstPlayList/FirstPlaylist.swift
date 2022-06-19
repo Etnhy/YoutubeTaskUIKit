@@ -9,19 +9,16 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-protocol SendFromFirstPlaylist: AnyObject {
-    func send(playerModel: ShowPlayerModel)
-}
 
 class FirstPlaylist: UITableViewCell {
     static let identifier = "FirstPlaylist"
     
+    weak var sendId: SendFromFirstPlaylist?
     var model = [FirstCellModel]()
     let network = NetworkManager()
     var presenter: FirstPlaylistViewProtocol?
     var viewsCont = [String]()
 
-   weak var sendId: SendFromFirstPlaylist?
     
     let firstPlaylistName: UILabel = {
         var name = UILabel()
@@ -45,25 +42,25 @@ class FirstPlaylist: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        // Configure the view for the selected state
         setupView()
         addSubviews()
     }
     
-    func setupView() {
+    fileprivate func setupView() {
         self.presenter = FirstPlaylistPresenter(view: self, networkManager: network)
     }
-    func addSubviews() {
+    
+    fileprivate func addSubviews() {
         self.addSubview(firstPlaylistCollectionView)
         self.addSubview(firstPlaylistName)
         activateConstraints()
     }
-    func activateConstraints() {
+    
+   fileprivate func activateConstraints() {
         firstPlaylistName.snp.makeConstraints { make in
             make.top.equalTo(self)
             make.leading.equalTo(self).offset(16)
@@ -75,9 +72,9 @@ class FirstPlaylist: UITableViewCell {
             make.bottom.equalTo(self)
         }
     }
-
 }
 
+// MARK: - UICollectionViewDataSource
 extension FirstPlaylist: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -89,13 +86,11 @@ extension FirstPlaylist: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         cell.configure(with: model[indexPath.row])
-
-        if viewsCont.count == model.count {
             cell.setViews(views: viewsCont[indexPath.row])
-        }
         cell.backgroundColor = .clear
         return cell
     }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let linkLoad = model[indexPath.row].linkId
         let name = model[indexPath.row].title
@@ -106,19 +101,21 @@ extension FirstPlaylist: UICollectionViewDataSource {
     }
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
 extension FirstPlaylist: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 180, height: 130)
     }
 }
 
+// MARK: - FirstPlaylistProtocol
 extension FirstPlaylist: FirstPlaylistProtocol {
     func setPlaylist(model: [FirstCellModel]) {
         self.model = model
     }
     
     func setViews(count views: [String]) {
-        DispatchQueue.main.asyncAfter(deadline: .now()+2) {
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
             self.viewsCont = views
             self.firstPlaylistCollectionView.reloadData()
         }

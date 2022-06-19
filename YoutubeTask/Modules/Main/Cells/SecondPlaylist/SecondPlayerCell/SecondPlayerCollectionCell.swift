@@ -11,7 +11,6 @@ import AlamofireImage
 class SecondPlayerCollectionCell: UICollectionViewCell {
     static let idenrifier = "SecondPlayerCollectionCell"
     
-    
     let secondPlaylistImage: UIImageView = {
         var view = UIImageView()
         view.image = UIImage(named: "ttew.png")
@@ -38,8 +37,6 @@ class SecondPlayerCollectionCell: UICollectionViewCell {
         label.textColor = .gray
         label.minimumScaleFactor = 0.1
         label.adjustsFontSizeToFitWidth = true
-
-        
         return label
     }()
     
@@ -66,28 +63,26 @@ class SecondPlayerCollectionCell: UICollectionViewCell {
         activateConstraints()
     }
     
-    
     func activateConstraints() {
-
         secondPlaylistImage.snp.makeConstraints { make in
             make.leading.trailing.equalTo(self)
             make.top.equalTo(self)
             make.height.equalTo(self.frame.size.width - 10)
         }
+        
         nameLabel.snp.makeConstraints { make in
             make.top.equalTo(secondPlaylistImage.snp.bottom).offset(8)
             make.leading.equalTo(self)
             make.trailing.equalTo(self)
 
         }
+        
         viewsCount.snp.makeConstraints { make in
             make.top.equalTo(nameLabel.snp.bottom).offset(8)
             make.leading.equalTo(self)
             make.trailing.equalTo(self)
-
         }
     }
-
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

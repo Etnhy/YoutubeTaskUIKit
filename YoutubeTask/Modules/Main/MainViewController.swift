@@ -8,17 +8,16 @@
 import UIKit
 import SnapKit
 
-protocol ClearPlayer: AnyObject {
-    func sendToClear(clear: String)
-}
 
 class MainViewController: UIViewController {
     
     var model = [FirstCellModel]()
     var playerIsVisible: Bool = true
-    weak var clearPlayer: ClearPlayer?
     var playerViewModel: ShowPlayerModel?
+    
+    
     let playerVC = PlayerViewController(playerModel: ShowPlayerModel())
+    let secondPlayerVC = PlayerViewController(playerModel: ShowPlayerModel())
     
     let mainTitle: UILabel = {
         var title = UILabel()
@@ -42,9 +41,6 @@ class MainViewController: UIViewController {
     
     lazy var showPlayerButton: ShowPlayerViewButton = {
         var button = ShowPlayerViewButton()
-        //        button.backgroundColor = .systemPink
-        //        button.showButton.addTarget(self, action: #selector(showPlayerAction(_:)), for: .touchUpInside)
-        
         return button
     }()
     
@@ -53,16 +49,14 @@ class MainViewController: UIViewController {
         view.backgroundColor = .black
         addSubviews()
         addPlayerVC()
-        
     }
     
     fileprivate func addSubviews() {
         view.addSubview(mainTitle)
         view.addSubview(table)
-        //        view.addSubview(showPlayerButton)
-        
         activateConstraints()
     }
+    
     func addPlayerVC() {
         addChild(playerVC)
         view.addSubview(playerVC.view)
@@ -72,10 +66,50 @@ class MainViewController: UIViewController {
             make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
             make.leading.trailing.equalTo(view)
             make.bottom.equalTo(view.snp.bottom).offset(550)
-            
         }
     }
+    
+    fileprivate func setSecondPlayer() {
+        addChild(secondPlayerVC)
+        view.addSubview(secondPlayerVC.view)
+        secondPlayerVC.didMove(toParent: self)
+        secondPlayerVC.view.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
+            make.leading.trailing.equalTo(view)
+            make.bottom.equalTo(view.snp.bottom).offset(0)
+        }
+        self.view.layoutIfNeeded()
+    }
+    
+    fileprivate func showPlayer(model: ShowPlayerModel) -> UIViewController {
+        playerIsVisible.toggle()
+        let player = PlayerViewController(playerModel: model)
+        addChild(player)
+        view.addSubview(player.view)
+        player.didMove(toParent: self)
+        player.view.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
+            make.leading.trailing.equalTo(view)
+            make.bottom.equalTo(view.snp.bottom).offset(0)
+        }
+        self.view.layoutIfNeeded()
+        return player
+    }
+    
     // MARK: -  Actions
+    @objc func showPlayer() {
+        playerIsVisible.toggle()
+        playerVC.playerIsVisible.toggle()
+        UIView.animate(withDuration: 0.7) {
+            self.playerVC.view.snp.updateConstraints { make in
+                make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
+                make.leading.trailing.equalTo(self.view)
+                make.bottom.equalTo(self.view.snp.bottom).offset(0)
+            }
+            self.view.layoutIfNeeded()
+        }
+    }
+    
     @objc fileprivate func changePlayerPostion(_ sender: UIButton) {
         playerIsVisible.toggle()
         UIView.animate(withDuration: 0.7) {
@@ -88,70 +122,12 @@ class MainViewController: UIViewController {
         }
     }
     
-    @objc func showPlayer(_ sender: UIButton) {
-        playerIsVisible.toggle()
-        playerVC.playerIsVisible.toggle()
-        UIView.animate(withDuration: 0.7) {
-            self.playerVC.view.snp.updateConstraints { make in
-                make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
-                make.leading.trailing.equalTo(self.view)
-                make.bottom.equalTo(self.view.snp.bottom).offset(0)
-            }
-            self.view.layoutIfNeeded()
-        }
-    }
-    @objc  func hidePlayer() {
-        print("hide player")
-
-//        let v = UIScreen.
-//        UIView.animate(withDuration: 0.7) {
-//        sender.view.snp.makeConstraints { make in
-//                make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
-//            make.leading.trailing.equalTo(self.view)
-//            make.bottom.equalTo(self.view.snp.bottom).offset(550)
-//
-//            }
-//        }
-    }
-    
-    fileprivate func showPlayer(model: ShowPlayerModel) -> UIViewController {
-        playerIsVisible.toggle()
-
-        let player = PlayerViewController(playerModel: model)
-        addChild(player)
-        view.addSubview(player.view)
-        player.didMove(toParent: self)
-        player.view.snp.makeConstraints { make in
-            make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
-            make.leading.trailing.equalTo(view)
-            make.bottom.equalTo(view.snp.bottom).offset(0)
-            
-        }
-        
-        self.view.layoutIfNeeded()
-        player.showViewButton.addTarget(self, action: #selector(hidePlayer), for: .touchUpInside)
-
-        return player
-    }
-    
-    
-    
     fileprivate func activateConstraints() {
-        //        playerVC.view.snp.makeConstraints { make in
-        //            make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
-        //            make.leading.trailing.equalTo(view)
-        //            make.bottom.equalTo(view.snp.bottom).offset(550)
-        //
-        //        }
-        //        showPlayerButton.snp.makeConstraints { make in
-        //            make.leading.trailing.equalTo(view)
-        //            make.bottom.equalTo(view.snp.bottom)
-        //            make.height.equalTo(60)
-        //        }
         mainTitle.snp.makeConstraints { make in
             make.top.equalTo(view).offset(50)
             make.leading.equalTo(view).offset(20)
         }
+        
         table.snp.makeConstraints { make in
             make.top.equalTo(mainTitle.snp.bottom).offset(20)
             make.leading.trailing.equalTo(view)
@@ -160,25 +136,13 @@ class MainViewController: UIViewController {
     }
 }
 
-
+// MARK: Extenstion - UITableViewDataSource, UITableViewDelegate
 extension MainViewController: UITableViewDataSource, UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //        var cell: UITableViewCell?
-        //
-        //        if indexPath.row % 2 == 0 {
-        //            cell = tableView.dequeueReusableCell(withIdentifier: FirstPlaylist.identifier, for: indexPath)
-        //            cell?.backgroundColor = .black
-        //        } else {
-        //            cell = tableView.dequeueReusableCell(withIdentifier: SecondPlaylist.identifier, for: indexPath)
-        //            cell?.backgroundColor = .black
-        //        }
-        //        cell?.selectionStyle = .none
-        //        return cell!
         switch indexPath.row {
         case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: FirstPlaylist.identifier, for: indexPath) as! FirstPlaylist
@@ -191,11 +155,9 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
             cell.sendFromSecond = self
             return cell
         default: break
-            //
         }
         return UITableViewCell()
     }
-    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.row {
@@ -213,74 +175,29 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         header.sendUpload = self
         return header
     }
-    
 }
 
-extension MainViewController: ShowButtonDelegate {
-    func setShow(_ bool: Bool) {
-        self.showPlayerButton.isHidden = bool
-        print(bool)
-    }
-    
-}
+// MARK: Extensions - SendUploads
 extension MainViewController: SendUploads {
     func sendUploads(playerModel: ShowPlayerModel) {
         self.playerViewModel = playerModel
-        clearChildPlayer()
-        showPlayer(model: playerModel)
-        print(children.count)
-        //            self.addPlayerVC()
-        
-        //        showPlayer(model: playerModel)
-        //        let player = PlayerViewController(playerModel: playerModel)
-        //        print(playerModel)
-        //        self.navigationController?.present(player, animated: true)
+        playerVC.configure(playerModel: playerModel)
     }
 }
+
 // MARK: - from first playlist
 extension MainViewController: SendFromFirstPlaylist {
     func send(playerModel: ShowPlayerModel) {
         self.playerViewModel = playerModel
-        
-        //        let player = PlayerViewController(playerModel: playerModel)
-        //        self.navigationController?.present(player, animated: true)
+        playerVC.configure(playerModel: playerModel)
     }
 }
+
 // MARK: - from second playlist
 extension MainViewController: SendFromSecondPlaylist {
     func sendSecond(playerModel: ShowPlayerModel) {
         self.playerViewModel = playerModel
-        //        let player = PlayerViewController(playerModel: playerModel)
-        //        self.navigationController?.present(player, animated: true)
-        
-    }
-}
-
-extension UIViewController {
-    func clearChildPlayer() {
-        if self.children.count > 0 {
-            let vc: [UIViewController] = self.children
-            vc.last?.willMove(toParent: nil)
-            vc.last?.removeFromParent()
-            vc.last?.view.removeFromSuperview()
-        }
-        
-    }
-    func addChildPlayer(model: ShowPlayerModel) {
-        //        let player = PlayerViewController(playerModel: model)
-        //        addChild(player)
-        //
-        //        self.view.addSubview(player.view)
-        //        UIView.animate(withDuration: 0.7) {
-        //
-        //            player.view.snp.makeConstraints { make in
-        //                make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
-        //                make.leading.trailing.equalTo(self.view)
-        //                make.bottom.equalTo(self.view.snp.bottom).offset(550)
-        //            }
-        //
-        //            self.view.layoutIfNeeded()
-        //        }
+        playerVC.configure(playerModel: playerModel)
     }
 }
 

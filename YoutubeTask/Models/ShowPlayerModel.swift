@@ -7,6 +7,8 @@
 
 import Foundation
 
+
+// MARK: - Show player model
 struct ShowPlayerModel {
     var songTitle:  String = " "
     var viewsCount: String = " "

@@ -22,6 +22,7 @@ struct Items: Codable {
     let id:   String
     let snippet: Snippet
 }
+
     // MARK: - Snippet
 struct Snippet: Codable {
     let publishedAt: String
@@ -37,11 +38,13 @@ struct Snippet: Codable {
     let videoOwnerChannelId: String
 
 }
+
     // MARK: - ContentDetails
 struct ContentDetails: Codable {
     let videoId: String
     let videoPublishedAt: String
 }
+
     // MARK: -  Thumbnails + Medium
 struct Thumbnails: Codable {
     let medium: Medium
