@@ -9,7 +9,9 @@ import UIKit
 import AlamofireImage
 
 class CarouselCollectionViewCell: UICollectionViewCell {
+    
     static let identifier = "CarouselCollectionViewCell"
+    
     var uploads: String = ""
     
     let bannerImage: UIImageView = {
@@ -71,6 +73,7 @@ class CarouselCollectionViewCell: UICollectionViewCell {
         guard let url = URL(string: "\(model.channelImgage)") else { return }
         self.bannerImage.af.setImage(withURL: url)
     }
+
     
     func activateConstraints() {
         bannerImage.snp.makeConstraints { make in

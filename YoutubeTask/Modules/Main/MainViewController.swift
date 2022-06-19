@@ -8,6 +8,9 @@
 import UIKit
 import SnapKit
 
+protocol SendPlaylisIdFromHeader: AnyObject {
+    func sendPlaylistId(_ string: String)
+}
 
 class MainViewController: UIViewController {
     
@@ -17,7 +20,9 @@ class MainViewController: UIViewController {
     
     
     let playerVC = PlayerViewController(playerModel: ShowPlayerModel())
-    let secondPlayerVC = PlayerViewController(playerModel: ShowPlayerModel())
+
+    
+    weak var sendPlaylistid: SendPlaylisIdFromHeader?
     
     let mainTitle: UILabel = {
         var title = UILabel()
@@ -68,38 +73,10 @@ class MainViewController: UIViewController {
             make.bottom.equalTo(view.snp.bottom).offset(550)
         }
     }
-    
-    fileprivate func setSecondPlayer() {
-        addChild(secondPlayerVC)
-        view.addSubview(secondPlayerVC.view)
-        secondPlayerVC.didMove(toParent: self)
-        secondPlayerVC.view.snp.makeConstraints { make in
-            make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
-            make.leading.trailing.equalTo(view)
-            make.bottom.equalTo(view.snp.bottom).offset(0)
-        }
-        self.view.layoutIfNeeded()
-    }
-    
-    fileprivate func showPlayer(model: ShowPlayerModel) -> UIViewController {
-        playerIsVisible.toggle()
-        let player = PlayerViewController(playerModel: model)
-        addChild(player)
-        view.addSubview(player.view)
-        player.didMove(toParent: self)
-        player.view.snp.makeConstraints { make in
-            make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
-            make.leading.trailing.equalTo(view)
-            make.bottom.equalTo(view.snp.bottom).offset(0)
-        }
-        self.view.layoutIfNeeded()
-        return player
-    }
-    
+
     // MARK: -  Actions
-    @objc func showPlayer() {
+    fileprivate func showPlayer() {
         playerIsVisible.toggle()
-        playerVC.playerIsVisible.toggle()
         UIView.animate(withDuration: 0.7) {
             self.playerVC.view.snp.updateConstraints { make in
                 make.size.equalTo(CGSize(width: self.view.frame.width, height: 600))
@@ -180,8 +157,12 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
 // MARK: Extensions - SendUploads
 extension MainViewController: SendUploads {
     func sendUploads(playerModel: ShowPlayerModel) {
-        self.playerViewModel = playerModel
-        playerVC.configure(playerModel: playerModel)
+        DispatchQueue.main.async {
+            self.playerViewModel = playerModel
+            self.playerVC.getPlaylistId(playerModel.playlistId)
+            self.showPlayer()
+
+        }
     }
 }
 
@@ -189,7 +170,7 @@ extension MainViewController: SendUploads {
 extension MainViewController: SendFromFirstPlaylist {
     func send(playerModel: ShowPlayerModel) {
         self.playerViewModel = playerModel
-        playerVC.configure(playerModel: playerModel)
+//        playerVC.configure(playerModel: playerModel)
     }
 }
 
@@ -197,7 +178,7 @@ extension MainViewController: SendFromFirstPlaylist {
 extension MainViewController: SendFromSecondPlaylist {
     func sendSecond(playerModel: ShowPlayerModel) {
         self.playerViewModel = playerModel
-        playerVC.configure(playerModel: playerModel)
+//        playerVC.configure(playerModel: playerModel)
     }
 }
 

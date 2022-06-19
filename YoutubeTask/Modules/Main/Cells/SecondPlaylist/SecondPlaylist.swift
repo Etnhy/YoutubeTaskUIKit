@@ -97,6 +97,7 @@ extension SecondPlaylist: UICollectionViewDataSource {
     }
     
 }
+
 extension SecondPlaylist: UICollectionViewDelegateFlowLayout {
     
 }

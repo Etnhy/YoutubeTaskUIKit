@@ -8,23 +8,34 @@
 import UIKit
 import youtube_ios_player_helper
 
-protocol ShowButtonDelegate: AnyObject {
-    func setShow(_ bool: Bool)
-}
-class PlayerViewController: UIViewController {
 
-    weak var delegate: ShowButtonDelegate?
+class PlayerViewController: UIViewController {
+    
     var presenter: PlayerViewPresenterProtocol?
+    
+    var playerConfiguration =   [GetVideoPlayerStruct]()
+    let networkManager =        NetworkManager()
+    var playerConfigureModel:   Welcome?
 
     let buttonName = ["Prev","Play","Next"]
+    
+    
+    var playlistId: String = ""
+    
+    
     var playerIsVisible: Bool = true
     var playVideos:      Bool = false
+    
     var videoNameText: String = "" {
         willSet {
             self.videoName.text = videoNameText
         }
     }
 
+    
+    var position: Int!
+    var views: [String] = []
+    
     let containerView: UIView = {
        var view = UIView()
         view.addGradient()
@@ -116,9 +127,6 @@ class PlayerViewController: UIViewController {
         self.playerModel = playerModel
         self.videoName.text = playerModel.songTitle
         self.viewsCount.text = "\(playerModel.viewsCount) просмотра"
-        if !playerModel.playlistId.isEmpty {
-            playerView.load(withPlaylistId: playerModel.playlistId)
-        }
     }
     
     required init?(coder: NSCoder) {
@@ -134,7 +142,12 @@ class PlayerViewController: UIViewController {
     }
 
     fileprivate func setPresenter() {
-        self.presenter = PlayerPresenter(view: self)
+        self.presenter = PlayerPresenter(view: self, networkManager: networkManager)
+    }
+    
+    func getPlaylistId(_ playlistId: String) {
+        self.presenter?.setPlayer(playlist: playlistId)
+//        presenter?.getVideoId()
     }
     
     fileprivate func configureView() {
@@ -167,7 +180,14 @@ class PlayerViewController: UIViewController {
     @objc func buttonPlayerActions(_ sender: UIButton) {
         switch sender.tag {
         case 0:
-            playerView.previousVideo()
+            if position > 0 {
+                position -= 1
+                videoName.text = playerConfiguration[position].titles
+                playerView.load(withVideoId: playerConfiguration[position].videoId)
+                self.viewsCount.text = views[position]
+
+            }
+
         case 1:
             playVideos.toggle()
             var config = UIButton.Configuration.plain()
@@ -179,28 +199,30 @@ class PlayerViewController: UIViewController {
                 playerView.pauseVideo()
             }
         case 2:
-            playerView.nextVideo()
-        default: break
+            if position < playerConfiguration.count - 1{
+                position += 1
+                self.videoName.text = playerConfiguration[position].titles
+                playerView.load(withVideoId: playerConfiguration[position].videoId)
+                self.viewsCount.text = views[position]
+
+            }        default: break
         }
     }
+    
     // MARK: -  configure
-    func configure(playerModel: ShowPlayerModel) {
-        self.playerModel = playerModel
+    func configure(playerModel: [GetVideoPlayerStruct]) {
+            self.position = playerModel.first?.position
+            self.videoName.text = playerModel.first?.titles
+            self.viewsCount.text = self.views.first
+            self.playerView.load(withVideoId: playerModel.first!.videoId)
         
-        self.videoName.text = playerModel.songTitle
-        self.viewsCount.text = "\(playerModel.viewsCount) просмотра"
-        
-        playerView.load(withVideoId: playerModel.loadLink)
-        playerView.load(withPlaylistId: playerModel.playlistId)
     }
 
         // MARK: -  Actions
-    
     @objc func imageChanger() {
         playerIsVisible.toggle()
         var config = UIButton.Configuration.plain()
         config.image = playerIsVisible ? UIImage(named: "Close_Open"): UIImage(named: "Close_Open")?.rotated(byDegrees: 180) 
-        
         showViewButton.configuration = config
     }
     
@@ -257,12 +279,28 @@ class PlayerViewController: UIViewController {
         }
     }
 }
+
 // MARK: - PlayerPresenterProtocol
 extension PlayerViewController: PlayerPresenterProtocol {
-    func setPlayer() {
-        ///
+
+    
+    func configrePlayer(model: [GetVideoPlayerStruct]) {
+        DispatchQueue.main.async {
+            self.playerConfiguration = model
+            self.configure(playerModel: model)
+
+        }
+    }
+    func setViews(_ views: [String]) {
+        DispatchQueue.main.async {
+            self.views = views
+            self.viewsCount.text = views.first
+            print(views)
+
+        }
     }
 }
+    
 
 //MARK: - UIGestureRecognizerDelegate
 extension PlayerViewController: UIGestureRecognizerDelegate {
@@ -270,3 +308,4 @@ extension PlayerViewController: UIGestureRecognizerDelegate {
         return touch.view == gestureRecognizer.view
     }
 }
+

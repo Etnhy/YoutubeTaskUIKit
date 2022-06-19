@@ -40,6 +40,7 @@
 		60ED48DB2859F61900FF0C64 /* SecondPlayerCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ED48DA2859F61900FF0C64 /* SecondPlayerCollectionCell.swift */; };
 		60ED48DE285A024C00FF0C64 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ED48DD285A024C00FF0C64 /* PlayerViewController.swift */; };
 		60F48B2B285B5F8D00E6DA48 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F48B2A285B5F8D00E6DA48 /* UIImage+Extension.swift */; };
+		60FB7E8B285F6B6E00E2883D /* PlayerContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FB7E8A285F6B6E00E2883D /* PlayerContract.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +80,7 @@
 		60ED48DA2859F61900FF0C64 /* SecondPlayerCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondPlayerCollectionCell.swift; sourceTree = "<group>"; };
 		60ED48DD285A024C00FF0C64 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		60F48B2A285B5F8D00E6DA48 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
+		60FB7E8A285F6B6E00E2883D /* PlayerContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerContract.swift; sourceTree = "<group>"; };
 		A3467581C25B2C6781AEC64E /* Pods-YoutubeTask.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YoutubeTask.release.xcconfig"; path = "Target Support Files/Pods-YoutubeTask/Pods-YoutubeTask.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -188,7 +190,7 @@
 		60B2D6DF28589DDE000A9D43 /* YoutubeTask */ = {
 			isa = PBXGroup;
 			children = (
-				60B969D3285E6ABD00005842 /* Utls */,
+				60B969D3285E6ABD00005842 /* Utils */,
 				60A00A582859048000B43FFA /* Extension */,
 				603BEB05285D1EA00024B0B2 /* App */,
 				60B562EC285A154F00215FE0 /* Models */,
@@ -262,19 +264,20 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		60B969D3285E6ABD00005842 /* Utls */ = {
+		60B969D3285E6ABD00005842 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				60B2D6E928589DE0000A9D43 /* Assets.xcassets */,
 				60B2D6EE28589DE0000A9D43 /* Info.plist */,
 			);
-			path = Utls;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		60ED48DC2859FCBC00FF0C64 /* Player */ = {
 			isa = PBXGroup;
 			children = (
 				60ED48DD285A024C00FF0C64 /* PlayerViewController.swift */,
+				60FB7E8A285F6B6E00E2883D /* PlayerContract.swift */,
 				603BEB08285D206B0024B0B2 /* PlayerPresenter.swift */,
 			);
 			path = Player;
@@ -441,6 +444,7 @@
 				60B2D6E328589DDE000A9D43 /* SceneDelegate.swift in Sources */,
 				60A00A5E28590BEA00B43FFA /* FirstPlayerCollectionCell.swift in Sources */,
 				603E46A8285BBD3500563C0E /* YoutubeChannelsModel.swift in Sources */,
+				60FB7E8B285F6B6E00E2883D /* PlayerContract.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
