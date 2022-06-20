@@ -15,7 +15,6 @@ protocol FirstPlaylistProtocol: AnyObject {
 
 protocol FirstPlaylistViewProtocol: AnyObject {
     init(view: FirstPlaylistProtocol, networkManager: NetworkManager)
-    var firstViewsArray: [String] { get set }
     var welcome: [Items]? { get set }
     
     func setFirst()

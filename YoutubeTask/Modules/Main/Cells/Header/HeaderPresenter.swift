@@ -6,9 +6,12 @@
 //
 
 import Foundation
+import RxSwift
 
 
 class HeaderPresenter: HeaderViewProtocol {
+    
+    let dispose = DisposeBag()
     var youtubeChannelItems: [YoutubeChannelItems]?
     weak var view: HeaderProtocol?
     var networkManager: NetworkManager!
@@ -21,18 +24,32 @@ class HeaderPresenter: HeaderViewProtocol {
     
     // MARK: - Set Channels
     func setChannels() {
-        networkManager.getChannels { [weak self] result in
-            switch result {
-            case .success(let channels):
-                self?.youtubeChannelItems = channels.items
-                let model = self?.youtubeChannelItems?.compactMap({
+        networkManager.getChannels()
+            .observe(on: MainScheduler.instance)
+            .subscribe { item in
+                self.youtubeChannelItems = item.items
+                let model = self.youtubeChannelItems?.compactMap({
                     HeaderModel(channelNames: $0.snippet.title, subscribersCount: $0.statistics.subscriberCount, channelImgage: $0.snippet.thumbnails.high.url,
                                 playlist: $0.contentDetails.relatedPlaylists.uploads)
                 })
-                self?.view?.setHeader(model: model!)
-            case .failure(let error):
+                self.view?.setHeader(model: model!)
+            } onError: { error in
                 print(error)
-            }
-        }
+            }onCompleted: {
+                print("Completed")
+            }.disposed(by: dispose)
+        //        networkManager.getChannels { [weak self] result in
+//            switch result {
+//            case .success(let channels):
+//                self?.youtubeChannelItems = channels.items
+//                let model = self?.youtubeChannelItems?.compactMap({
+//                    HeaderModel(channelNames: $0.snippet.title, subscribersCount: $0.statistics.subscriberCount, channelImgage: $0.snippet.thumbnails.high.url,
+//                                playlist: $0.contentDetails.relatedPlaylists.uploads)
+//                })
+//                self?.view?.setHeader(model: model!)
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }
     }
 }

@@ -84,9 +84,9 @@ extension SecondPlaylist: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         cell.configure(with: secondModel[indexPath.row])
-        if !secondViewsArray.isEmpty {
-            cell.setViews(views: secondViewsArray[indexPath.row])
-        }
+//        if !secondViewsArray.isEmpty {
+//            cell.setViews(views: secondViewsArray[indexPath.row])
+//        }
 //        cell.setViews(views: secondViewsArray[indexPath.row])
         cell.backgroundColor = .clear
         return cell

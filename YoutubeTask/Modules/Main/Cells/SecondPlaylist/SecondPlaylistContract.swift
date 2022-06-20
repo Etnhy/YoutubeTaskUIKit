@@ -15,7 +15,7 @@ protocol SecondPlaylistProtocol: AnyObject {
 
 protocol SecondPlaylistViewProtocol: AnyObject {
     init(view: SecondPlaylistProtocol, networkManager: NetworkManager)
-    var secondViewsArray: [String] { get set }
+//    var secondViewsArray: [String] { get set }
     var welcome: [Items]? { get }
     
     func setSecond()

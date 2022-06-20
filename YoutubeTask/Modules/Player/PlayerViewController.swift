@@ -202,7 +202,7 @@ class PlayerViewController: UIViewController {
                 position! += 1
                 self.videoName.text = playerConfiguration[position!].titles
                 playerView.load(withVideoId: playerConfiguration[position!].videoId)
-                self.viewsCount.text = views[position!]
+//                self.viewsCount.text = views[position!]
 
             }        default: break
         }
@@ -218,6 +218,8 @@ class PlayerViewController: UIViewController {
     }
     func configureWithPlaylist(playerModel: [WithPlaylistStruct]) {
             self.witPlaylist = playerModel
+        self.viewsCount.text = self.views[self.position!]
+
     }
     func setPosition(position: Int) {
         DispatchQueue.main.async {
@@ -261,7 +263,7 @@ class PlayerViewController: UIViewController {
         }
         
         playerView.snp.makeConstraints { make in
-            make.top.equalTo(showViewButton.snp.bottom).offset(8)
+            make.top.equalTo(showViewButton.snp.bottom).offset(12)
             make.leading.equalTo(view).offset(4)
             make.trailing.equalTo(view).offset(-4)
             make.height.equalTo(240)

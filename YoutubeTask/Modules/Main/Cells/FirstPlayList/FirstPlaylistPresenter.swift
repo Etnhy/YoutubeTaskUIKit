@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import RxSwift
 
 
 class FirstPlaylistPresenter: FirstPlaylistViewProtocol {
     
-    var firstViewsArray: [String] = []
     var welcome: [Items]?
+    var dispose = DisposeBag()
+    var youtubeVideoResponse: YoutubeVideoResponse!
 
     weak var view: FirstPlaylistProtocol?
     var networkManager: NetworkManager!
@@ -22,37 +24,40 @@ class FirstPlaylistPresenter: FirstPlaylistViewProtocol {
     }
     
     
+    
     func setFirst() {
-        DispatchQueue.main.async {
-            self.networkManager.getYoutubePlaylist(playlistNumber: Configuration.Playlists.first) { [weak self] result in
-                switch result {
-                case .success(let succes):
-                    self?.welcome = succes.items
-                    let model = self?.welcome?.compactMap({
-                        FirstCellModel(title: $0.snippet.title, image: $0.snippet.thumbnails.medium.url, linkId: $0.snippet.resourceId.videoId, playlistId: $0.snippet.playlistId)
-                    })
-                    self?.view?.setPlaylist(model: model!)
-                case .failure(let error):
-                    print(error)
-                }
-                self?.setFirstViews()
+        networkManager.getYoutubePlaylist2(playlistNumber: Configuration.Playlists.first)
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe { [weak self] items in
+                guard let self = self else {return}
+                self.welcome = items.items
+                let model = self.welcome?.compactMap({
+                    FirstCellModel(title: $0.snippet.title, image: $0.snippet.thumbnails.medium.url, linkId: $0.snippet.resourceId.videoId, playlistId: $0.snippet.playlistId)
+                })
+                self.view?.setPlaylist(model: model!)
+            } onError: { error in
+                print(error)
+            } onCompleted: {
+                self.setFirstViews()
             }
-        }
+            .disposed(by: dispose)
     }
     
     func setFirstViews() {
+        var firstViewsArray: [String] = []
         guard let welcome = welcome else { return }
         for i in welcome {
-            networkManager.getViewsVideos(videoId: i.snippet.resourceId.videoId ) { [weak self] video in
-                switch video {
-                case .success(let succes):
-                    let result = succes.items.map({$0.statistics.viewCount})
-                    self?.firstViewsArray += result
-                    self?.view?.setViews(count: self!.firstViewsArray)
-                case .failure(let error):
+            networkManager.getViewsVideos2(videoId: i.snippet.resourceId.videoId)
+                .observe(on: MainScheduler.instance)
+                .subscribe { item in
+                    let result = item.items.map({$0.statistics.viewCount})
+                    firstViewsArray += result
+                    self.view?.setViews(count: firstViewsArray)
+                } onError: { error in
                     print(error)
-                }
-            }
+                }onCompleted:{
+                    print("views set")
+                }.disposed(by: dispose)
         }
     }
 }

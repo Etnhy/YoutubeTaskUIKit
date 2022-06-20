@@ -89,9 +89,9 @@ extension FirstPlaylist: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         cell.configure(with: model[indexPath.row])
-        if !viewsCont.isEmpty {
-            cell.setViews(views: viewsCont[indexPath.row])
-        }
+//        if !viewsCont.isEmpty {
+//            cell.setViews(views: viewsCont[indexPath.row])
+//        }
         cell.backgroundColor = .clear
         return cell
     }
@@ -126,9 +126,12 @@ extension FirstPlaylist: FirstPlaylistProtocol {
     }
     
     func setViews(count views: [String]) {
-        self.viewsCont = views
-        DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.01) {
+            self.viewsCont = views
             self.firstPlaylistCollectionView.reloadData()
+
+
         }
+
     }
 }
