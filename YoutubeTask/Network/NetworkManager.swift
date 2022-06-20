@@ -7,10 +7,13 @@
 
 import UIKit
 import Alamofire
-
+import RxCocoa
+import RxSwift
 class NetworkManager: NetworkLayerProtocol {
 
+    
 
+    
     
     static let shared = NetworkManager()
     
@@ -25,6 +28,18 @@ class NetworkManager: NetworkLayerProtocol {
     fileprivate let thirdChannel    = Configuration.Channels.thirdChannel
     fileprivate let fourthChannel   = Configuration.Channels.fourthChannel
     
+    
+ 
+    func getPlaylistPromHeader2(playlistId: String) -> Observable<Welcome> {
+        let url = "\(apiUrl)playlistItems?playlistId=\(playlistId)&maxResults=10&part=snippet%2CcontentDetails&key=\(apiKey)"
+
+        return requestRx(url)
+    }
+    func getViewsToPlayer2(videoId: String) -> Observable<YoutubeVideoResponse> {
+        let url = "\(apiUrl)videos?part=statistics&id=\(videoId)&key=\(apiKey)"
+        return requestRx(url)
+    }
+    
     // MARK: - Get views to player
     func getViewsToPlayer(videoId: String, completion: @escaping (Result<YoutubeVideoResponse, AFError>) -> ()) {
         let url = "\(apiUrl)videos?part=statistics&id=\(videoId)&key=\(apiKey)"
@@ -35,7 +50,7 @@ class NetworkManager: NetworkLayerProtocol {
     func getPlaylistPromHeader(playlistId: String, completion: @escaping (Result<Welcome, AFError>) -> ()) {
         let url = "\(apiUrl)playlistItems?playlistId=\(playlistId)&maxResults=10&part=snippet%2CcontentDetails&key=\(apiKey)"
         downloadJson(url: url, completion: completion)
-
+        
     }
     
     // MARK: - Get channels
@@ -43,7 +58,7 @@ class NetworkManager: NetworkLayerProtocol {
         let url = "\(apiUrl)channels?part=snippet%2CcontentDetails%2Cstatistics&id=\(firstChannel)&id=\(secondChannel)&id=\(thirdChannel)&id=\(fourthChannel)&key=\(apiKey)"
         downloadJson(url: url, completion: completion)
     }
-
+    
     
     // MARK: - Get Youtube playlists (first + second)
     func getYoutubePlaylist(playlistNumber: String ,completion: @escaping (Result<Welcome, AFError>) -> ()) {
@@ -55,6 +70,37 @@ class NetworkManager: NetworkLayerProtocol {
     func getViewsVideos(videoId: String,completion: @escaping (Result<YoutubeVideoResponse,AFError>) ->()) {
         let url = "\(apiUrl)videos?part=statistics&id=\(videoId)&key=\(apiKey)"
         downloadJson(url: url, completion: completion)
+    }
+    
+    fileprivate func requestRx<T:Codable>(_ urlConvertible:String) -> Observable<T>{
+        
+        return Observable<T>.create { observer  in
+            let request = AF.request(urlConvertible).responseDecodable { (response: DataResponse<T, AFError>) in
+                switch response.result {
+                case .success(let value):
+                    observer.onNext(value)
+                    observer.onCompleted()
+                case .failure(let error):
+                    print(error)
+//                    switch response.response?.statusCode {
+//                    case 403:
+//                        observer.onError(ApiError.forbidden)
+//                    case 404:
+//                        observer.onError(ApiError.notFound)
+//                    case 409:
+//                        observer.onError(ApiError.conflict)
+//                    case 500:
+//                        observer.onError(ApiError.internalServerError)
+//                    default:
+//                        observer.onError(error)
+//                    }
+
+                }
+            }
+            return Disposables.create {
+                request.cancel()
+            }
+        }
     }
     
     // MARK: - generic feth func

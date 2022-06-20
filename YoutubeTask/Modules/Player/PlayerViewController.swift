@@ -7,7 +7,8 @@
 
 import UIKit
 import youtube_ios_player_helper
-
+import RxSwift
+import RxCocoa
 
 class PlayerViewController: UIViewController {
     
@@ -147,7 +148,6 @@ class PlayerViewController: UIViewController {
     
     func getPlaylistId(_ playlistId: String) {
         self.presenter?.setPlayer(playlist: playlistId)
-//        presenter?.getVideoId()
     }
     
     fileprivate func configureView() {
@@ -211,13 +211,16 @@ class PlayerViewController: UIViewController {
     
     // MARK: -  configure
     func configure(playerModel: [GetVideoPlayerStruct]) {
+        if !views.isEmpty {
+            self.viewsCount.text = self.views.first
             self.position = playerModel.first?.position
             self.videoName.text = playerModel.first?.titles
-            self.viewsCount.text = self.views.first
             self.playerView.load(withVideoId: playerModel.first!.videoId)
-        
-    }
 
+        }
+
+    }
+    
         // MARK: -  Actions
     @objc func imageChanger() {
         playerIsVisible.toggle()
@@ -282,21 +285,16 @@ class PlayerViewController: UIViewController {
 
 // MARK: - PlayerPresenterProtocol
 extension PlayerViewController: PlayerPresenterProtocol {
-
-    
     func configrePlayer(model: [GetVideoPlayerStruct]) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.2) {
             self.playerConfiguration = model
             self.configure(playerModel: model)
-
         }
     }
+    
     func setViews(_ views: [String]) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
             self.views = views
-            self.viewsCount.text = views.first
-            print(views)
-
         }
     }
 }

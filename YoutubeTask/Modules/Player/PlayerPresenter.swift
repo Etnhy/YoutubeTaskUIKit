@@ -6,12 +6,13 @@
 //
 
 import Foundation
-
+import RxSwift
+import RxCocoa
 
 class PlayerPresenter: PlayerViewPresenterProtocol {
-
+    var dispose = DisposeBag()
     
-    var viewsToPlayer: [String] = []
+//    var viewsToPlayer: [String] = []
     let networkManager: NetworkManager!
     
     weak var view: PlayerPresenterProtocol?
@@ -23,50 +24,40 @@ class PlayerPresenter: PlayerViewPresenterProtocol {
     required init(view: PlayerPresenterProtocol, networkManager: NetworkManager) {
         self.view = view
         self.networkManager = networkManager
-//        getVideoId()
     }
     
     func setPlayer(playlist: String) {
-        DispatchQueue.main.async {
-            self.networkManager.getPlaylistPromHeader(playlistId: playlist) { result in
-                switch result {
-                case .success(let response):
-                    self.items = response
-                    let playerModel = response.items.compactMap({
-                        GetVideoPlayerStruct(position: $0.snippet.position ,videoId: $0.snippet.resourceId.videoId, titles: $0.snippet.title)
-                    })
-                    self.videoIdArray = response.items.map({$0.snippet.resourceId.videoId})
-                    self.view?.configrePlayer(model: playerModel)
-                case .failure(let error):
-                    print(error)
-                }
+        networkManager.getPlaylistPromHeader2(playlistId: playlist)
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe { items in
+                self.items = items
+                let playerModel = items.items.compactMap({
+                    GetVideoPlayerStruct(position: $0.snippet.position ,videoId: $0.snippet.resourceId.videoId, titles: $0.snippet.title)
+                })
+                self.videoIdArray = items.items.map({$0.snippet.resourceId.videoId})
+                self.view?.configrePlayer(model: playerModel)
+            } onError: { error in
+                print(error)
+            } onCompleted: {
+                self.view?.setViews(self.getVideoId())
             }
-            self.getVideoId()
-        }
+            .disposed(by: dispose)
     }
     
-    func getVideoId() {
-        guard let items = items?.items else { return }
-        DispatchQueue.main.asyncAfter(deadline: .now()+1) {
-            for i in items {
-                self.networkManager.getViewsToPlayer(videoId: i.snippet.resourceId.videoId) { result in
-                    switch result {
-                    case .success(let views):
-                        print(views.items)
-                        let resultViews = views.items.map({$0.statistics.viewCount})
-                        self.viewsToPlayer += resultViews
-                        self.view?.setViews(self.viewsToPlayer)
-                    case .failure(let error):
-                        print(error)
-                    }
-                }
-            }
+    func getVideoId() -> [String] {
+        var viewsArray: [String] = []
+        for i in items!.items {
+            networkManager.getViewsToPlayer2(videoId: i.snippet.resourceId.videoId)
+                .observe(on: MainScheduler.instance)
+                .subscribe { views in
+                    let vi = views.items.map({ $0.statistics.viewCount})
+                    viewsArray += vi
+                    self.view?.setViews(viewsArray)
+                } onError: { error in
+                    print(error)
+                }.disposed(by: dispose)
         }
+        return viewsArray
     }
 }
-struct GetVideoPlayerStruct {
-    var position:    Int
-    var videoId:    String
-    var titles:     String
-//    var views:
-}
+

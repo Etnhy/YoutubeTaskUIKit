@@ -160,6 +160,7 @@ extension MainViewController: SendUploads {
         DispatchQueue.main.async {
             self.playerViewModel = playerModel
             self.playerVC.getPlaylistId(playerModel.playlistId)
+            self.playerVC.reloadInputViews()
             self.showPlayer()
 
         }

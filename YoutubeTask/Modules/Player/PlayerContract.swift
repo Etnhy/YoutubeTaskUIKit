@@ -16,7 +16,5 @@ protocol PlayerPresenterProtocol: AnyObject {
 protocol PlayerViewPresenterProtocol: AnyObject {
     init(view:PlayerPresenterProtocol, networkManager: NetworkManager)
     func setPlayer(playlist: String)
-    func getVideoId()
-    
-//    var videoName: String { get set }
+    func getVideoId() -> [String]
 }

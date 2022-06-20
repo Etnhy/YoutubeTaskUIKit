@@ -7,6 +7,8 @@
 
 import Foundation
 import Alamofire
+import RxSwift
+import RxCocoa
 
 // MARK: - NetworkLayerProtocol
 protocol NetworkLayerProtocol {
@@ -15,4 +17,11 @@ protocol NetworkLayerProtocol {
     func getChannels(completion: @escaping (Result<YoutubeChannelsModel,AFError>) -> ())
     func getPlaylistPromHeader(playlistId: String,completion: @escaping (Result<Welcome,AFError>) -> ())
     func getViewsToPlayer(videoId: String,completion: @escaping (Result<YoutubeVideoResponse,AFError>) ->())
+    
+    
+    // MARK: -  rx
+    func getPlaylistPromHeader2(playlistId: String) -> Observable<Welcome>
+    func getViewsToPlayer2(videoId: String) -> Observable<YoutubeVideoResponse>
+
+    
 }

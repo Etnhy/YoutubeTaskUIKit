@@ -41,6 +41,7 @@
 		60ED48DE285A024C00FF0C64 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ED48DD285A024C00FF0C64 /* PlayerViewController.swift */; };
 		60F48B2B285B5F8D00E6DA48 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F48B2A285B5F8D00E6DA48 /* UIImage+Extension.swift */; };
 		60FB7E8B285F6B6E00E2883D /* PlayerContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FB7E8A285F6B6E00E2883D /* PlayerContract.swift */; };
+		60FB7E8D285FF11700E2883D /* GetViedeoPlayerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FB7E8C285FF11700E2883D /* GetViedeoPlayerModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,6 +82,7 @@
 		60ED48DD285A024C00FF0C64 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		60F48B2A285B5F8D00E6DA48 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		60FB7E8A285F6B6E00E2883D /* PlayerContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerContract.swift; sourceTree = "<group>"; };
+		60FB7E8C285FF11700E2883D /* GetViedeoPlayerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetViedeoPlayerModel.swift; sourceTree = "<group>"; };
 		A3467581C25B2C6781AEC64E /* Pods-YoutubeTask.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YoutubeTask.release.xcconfig"; path = "Target Support Files/Pods-YoutubeTask/Pods-YoutubeTask.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -259,6 +261,7 @@
 				605C6099285B42EA004DA484 /* First+SecondPlaylistModel.swift */,
 				603E46A7285BBD3500563C0E /* YoutubeChannelsModel.swift */,
 				603BEAF4285C95740024B0B2 /* HeaderModel.swift */,
+				60FB7E8C285FF11700E2883D /* GetViedeoPlayerModel.swift */,
 				603B5EF3285D4A5500C98505 /* ShowPlayerModel.swift */,
 			);
 			path = Models;
@@ -429,6 +432,7 @@
 				60B969D2285E66C700005842 /* NetworkContract.swift in Sources */,
 				603BEAF9285D17570024B0B2 /* HeaderContract.swift in Sources */,
 				60A00A5C285904AB00B43FFA /* UIColor+Extension.swift in Sources */,
+				60FB7E8D285FF11700E2883D /* GetViedeoPlayerModel.swift in Sources */,
 				603B5EF1285D280500C98505 /* ShowPlayerViewButton.swift in Sources */,
 				60B562F2285A7E0800215FE0 /* Configuration.swift in Sources */,
 				60ED48DB2859F61900FF0C64 /* SecondPlayerCollectionCell.swift in Sources */,

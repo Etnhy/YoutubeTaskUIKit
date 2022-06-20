@@ -97,6 +97,7 @@ extension FirstPlaylist: UICollectionViewDataSource {
         let playlistId = model[indexPath.row].playlistId
         let viewss = viewsCont[indexPath.row]
         let playerModel = ShowPlayerModel(songTitle: name, viewsCount: viewss, playlistId: playlistId!, loadLink: linkLoad)
+        
         self.sendId?.send(playerModel: playerModel)
     }
 }
