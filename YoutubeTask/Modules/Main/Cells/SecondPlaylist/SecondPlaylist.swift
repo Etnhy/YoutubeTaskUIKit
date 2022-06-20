@@ -85,7 +85,7 @@ extension SecondPlaylist: UICollectionViewDataSource {
         }
         cell.configure(with: secondModel[indexPath.row])
 //        if !secondViewsArray.isEmpty {
-//            cell.setViews(views: secondViewsArray[indexPath.row])
+            cell.setViews(views: secondViewsArray[indexPath.row])
 //        }
 //        cell.setViews(views: secondViewsArray[indexPath.row])
         cell.backgroundColor = .clear
@@ -122,7 +122,7 @@ extension SecondPlaylist: SecondPlaylistProtocol {
     func setSecondViews(count views: [String]) {
         self.secondViewsArray = views
 
-        DispatchQueue.main.asyncAfter(deadline: .now()+0.11) {
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
             self.secondPlaylistCollectionView.reloadData()
         }
     }

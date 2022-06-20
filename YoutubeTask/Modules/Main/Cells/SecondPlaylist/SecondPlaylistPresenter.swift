@@ -51,23 +51,8 @@ class SecondPlaylistPresenter: SecondPlaylistViewProtocol {
                     self.view?.setSecondViews(count: secondViewsArray)
                 } onError: { error in
                     print(error)
-                }onCompleted:{
-                    print("views set")
-                }.disposed(by: dispose)
+                }
+                .disposed(by: dispose)
         }
-
-//        guard let welcome = welcome else { return }
-//        for i in welcome {
-//            networkManager.getViewsVideos(videoId: i.snippet.resourceId.videoId ) { [weak self] video in
-//                switch video {
-//                case .success(let succes):
-//                    let result = succes.items.map({$0.statistics.viewCount})
-//                    self?.secondViewsArray += result
-//                    self?.view?.setSecondViews(count: self!.secondViewsArray)
-//                case .failure(let error):
-//                    print(error)
-//                }
-//            }
-//        }
     }
 }

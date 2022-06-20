@@ -75,6 +75,11 @@ class PlayerViewController: UIViewController {
         videoName.textAlignment = .center
         videoName.font = UIFont.systemFont(ofSize: 22, weight: .regular)
         videoName.textColor = .white
+        videoName.numberOfLines = 2
+        videoName.minimumScaleFactor = 0.7
+        videoName.adjustsFontSizeToFitWidth = true
+
+        videoName.textAlignment = .center
         return videoName
     }()
     
@@ -184,9 +189,7 @@ class PlayerViewController: UIViewController {
                 videoName.text = playerConfiguration[position!].titles
                 playerView.load(withVideoId: playerConfiguration[position!].videoId)
                 self.viewsCount.text = views[position!]
-
             }
-
         case 1:
             playVideos.toggle()
             var config = UIButton.Configuration.plain()
@@ -202,7 +205,7 @@ class PlayerViewController: UIViewController {
                 position! += 1
                 self.videoName.text = playerConfiguration[position!].titles
                 playerView.load(withVideoId: playerConfiguration[position!].videoId)
-//                self.viewsCount.text = views[position!]
+                self.viewsCount.text = views[position!]
 
             }        default: break
         }
@@ -210,12 +213,13 @@ class PlayerViewController: UIViewController {
     
     // MARK: -  configure
     func configure(playerModel: [GetVideoPlayerStruct]) {
-        DispatchQueue.main.asyncAfter(deadline: .now()+0.2) {
+        DispatchQueue.main.async {
             self.playerConfiguration = playerModel
-            self.position = playerModel[self.position!].position
+            self.position = playerModel[self.position ?? 0].position
             self.videoName.text = playerModel[self.position!].titles
         }
     }
+    
     func configureWithPlaylist(playerModel: [WithPlaylistStruct]) {
             self.witPlaylist = playerModel
         self.viewsCount.text = self.views[self.position!]
@@ -224,16 +228,7 @@ class PlayerViewController: UIViewController {
     func setPosition(position: Int) {
         DispatchQueue.main.async {
             self.position = position
-
         }
-//
-//        DispatchQueue.main.asyncAfter(deadline: .now()+1) {
-//            self.viewsCount.text = self.views[position]
-//            print(self.views[position])
-//            print(self.views)
-//
-//        }
-
     }
 
     
@@ -275,10 +270,10 @@ class PlayerViewController: UIViewController {
             make.height.equalTo(10)
         }
         videoName.snp.makeConstraints { make in
-            make.top.equalTo(progressView.snp.bottom).offset(40)
-            make.leading.equalTo(view).offset(60)
-            make.trailing.equalTo(view).offset(-60)
-            make.height.equalTo(40)
+            make.top.equalTo(progressView.snp.bottom).offset(20)
+            make.leading.equalTo(view).offset(8)
+            make.trailing.equalTo(view).offset(-8)
+            make.height.equalTo(70)
         }
         viewsCount.snp.makeConstraints { make in
             make.top.equalTo(videoName.snp.bottom).offset(4)
@@ -321,6 +316,8 @@ extension PlayerViewController: PlayerPresenterProtocol {
         DispatchQueue.main.asyncAfter(deadline: .now()+0.2) {
             self.views = views
         }
+
+        
     }
 }
 

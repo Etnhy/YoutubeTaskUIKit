@@ -24,7 +24,8 @@ class SecondPlayerCollectionCell: UICollectionViewCell {
         var label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         label.textColor = .white
-        label.minimumScaleFactor = 0.1
+        label.numberOfLines = 2
+        label.minimumScaleFactor = 0.7
         label.adjustsFontSizeToFitWidth = true
         label.text = "Eternal rest two trwo tw"
         return label
@@ -74,7 +75,7 @@ class SecondPlayerCollectionCell: UICollectionViewCell {
             make.top.equalTo(secondPlaylistImage.snp.bottom).offset(8)
             make.leading.equalTo(self)
             make.trailing.equalTo(self)
-
+            make.height.equalTo(40)
         }
         
         viewsCount.snp.makeConstraints { make in

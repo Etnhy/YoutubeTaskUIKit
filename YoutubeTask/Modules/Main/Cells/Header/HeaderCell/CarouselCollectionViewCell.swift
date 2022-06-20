@@ -43,13 +43,20 @@ class CarouselCollectionViewCell: UICollectionViewCell {
         var configuration = UIButton.Configuration.plain()
         configuration.image = UIImage(named: "Play")
         configuration.cornerStyle = .capsule
-        configuration.background.backgroundColor = .purple
+        
+//        configuration.background.backgroundColor = .purple
+        
         button.configuration = configuration
+//        button.addGradient()
+        button.backgroundColor = .systemPink
+        button.clipsToBounds = true
         return button
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        playButton.addGradient(colors: [.buttonGradientStart(), .buttonGradientEnd()])
+
         addSubviews()
     }
     

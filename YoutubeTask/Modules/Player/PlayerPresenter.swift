@@ -54,7 +54,6 @@ class PlayerPresenter: PlayerViewPresenterProtocol {
                     .subscribe { views in
                         let vi = views.items.map({ $0.statistics.viewCount})
                         viewsArray += vi
-                        print(viewsArray)
                         self.view?.setViews(viewsArray)
                     } onError: { error in
                         print(error)

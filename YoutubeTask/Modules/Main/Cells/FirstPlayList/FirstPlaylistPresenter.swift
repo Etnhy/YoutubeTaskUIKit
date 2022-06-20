@@ -55,9 +55,8 @@ class FirstPlaylistPresenter: FirstPlaylistViewProtocol {
                     self.view?.setViews(count: firstViewsArray)
                 } onError: { error in
                     print(error)
-                }onCompleted:{
-                    print("views set")
-                }.disposed(by: dispose)
+                }
+                .disposed(by: dispose)
         }
     }
 }

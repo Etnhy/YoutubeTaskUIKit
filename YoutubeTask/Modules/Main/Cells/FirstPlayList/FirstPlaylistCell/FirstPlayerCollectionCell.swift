@@ -19,6 +19,7 @@ class FirstPlayerCollectionCell: UICollectionViewCell {
         view.image = UIImage(named: "ttew.png")
         view.layer.cornerRadius = 8
         view.contentMode = .scaleAspectFill
+        view.clipsToBounds = true
         return view
     }()
     
@@ -46,6 +47,7 @@ class FirstPlayerCollectionCell: UICollectionViewCell {
     }
     
     func setupView() {
+        self.clipsToBounds = true
         self.layer.cornerRadius = 8
         addSubview(firstPlaylistImage)
         addSubview(nameLabel)
@@ -79,7 +81,7 @@ class FirstPlayerCollectionCell: UICollectionViewCell {
 
         }
         viewsCount.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).offset(8)
+            make.top.equalTo(nameLabel.snp.bottom)
             make.leading.equalTo(self)
             make.trailing.equalTo(self)
 
