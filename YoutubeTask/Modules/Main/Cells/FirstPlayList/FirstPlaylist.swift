@@ -9,10 +9,13 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+protocol SendPosition: AnyObject {
+    func position(_ position: Int)
+}
 
 class FirstPlaylist: UITableViewCell {
     static let identifier = "FirstPlaylist"
-    
+    weak var sendPosition: SendPosition?
     weak var sendId: SendFromFirstPlaylist?
     var model = [FirstCellModel]()
     let network = NetworkManager()
@@ -86,19 +89,26 @@ extension FirstPlaylist: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         cell.configure(with: model[indexPath.row])
+        if !viewsCont.isEmpty {
             cell.setViews(views: viewsCont[indexPath.row])
+        }
         cell.backgroundColor = .clear
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let linkLoad = model[indexPath.row].linkId
-        let name = model[indexPath.row].title
-        let playlistId = model[indexPath.row].playlistId
-        let viewss = viewsCont[indexPath.row]
-        let playerModel = ShowPlayerModel(songTitle: name, viewsCount: viewss, playlistId: playlistId!, loadLink: linkLoad)
-        
-        self.sendId?.send(playerModel: playerModel)
+        self.sendPosition?.position(indexPath.row)
+//        let model = model.compactMap({
+//            GetVideoPlayerStruct(position: indexPath.row , videoId: $0.linkId, titles: $0.title, playlistId: $0.playlistId)})
+//
+        let title = model[indexPath.row].title
+        let viewsCount = viewsCont[indexPath.row]
+        let videoId = model[indexPath.row].linkId
+        guard let playlistId = model[indexPath.row].playlistId else { return }
+
+
+        let model = ShowPlayerModel(songTitle: title, viewsCount: viewsCount, playlistId: playlistId, loadLink: videoId)
+        self.sendId?.send(playerModel: model)
     }
 }
 
@@ -116,8 +126,8 @@ extension FirstPlaylist: FirstPlaylistProtocol {
     }
     
     func setViews(count views: [String]) {
-        DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
-            self.viewsCont = views
+        self.viewsCont = views
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
             self.firstPlaylistCollectionView.reloadData()
         }
     }

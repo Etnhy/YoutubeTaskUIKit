@@ -18,7 +18,7 @@ class SecondPlaylistPresenter: SecondPlaylistViewProtocol {
     required init(view: SecondPlaylistProtocol, networkManager: NetworkManager) {
         self.view = view
         self.networkManager = networkManager
-//        setSecond()
+        setSecond()
     }
     
     func setSecond() {

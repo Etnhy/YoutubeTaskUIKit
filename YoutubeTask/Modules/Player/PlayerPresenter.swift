@@ -44,18 +44,36 @@ class PlayerPresenter: PlayerViewPresenterProtocol {
             .disposed(by: dispose)
     }
     
-    func getVideoId() -> [String] {
+    func getVideoId(idArray: [String]? = []) -> [String] {
         var viewsArray: [String] = []
-        for i in items!.items {
-            networkManager.getViewsToPlayer2(videoId: i.snippet.resourceId.videoId)
-                .observe(on: MainScheduler.instance)
-                .subscribe { views in
-                    let vi = views.items.map({ $0.statistics.viewCount})
-                    viewsArray += vi
-                    self.view?.setViews(viewsArray)
-                } onError: { error in
-                    print(error)
-                }.disposed(by: dispose)
+        guard let idArray = idArray else { return [] }
+        if !idArray.isEmpty {
+            for i in idArray {
+                networkManager.getViewsToPlayer2(videoId: i)
+                    .observe(on: MainScheduler.instance)
+                    .subscribe { views in
+                        let vi = views.items.map({ $0.statistics.viewCount})
+                        viewsArray += vi
+                        print(viewsArray)
+                        self.view?.setViews(viewsArray)
+                    } onError: { error in
+                        print(error)
+                    }.disposed(by: dispose)
+            }
+
+        } else {
+            for i in items!.items {
+                networkManager.getViewsToPlayer2(videoId: i.snippet.resourceId.videoId)
+                    .observe(on: MainScheduler.instance)
+                    .subscribe { views in
+                        let vi = views.items.map({ $0.statistics.viewCount})
+                        viewsArray += vi
+                        self.view?.setViews(viewsArray)
+                    } onError: { error in
+                        print(error)
+                    }.disposed(by: dispose)
+            }
+
         }
         return viewsArray
     }

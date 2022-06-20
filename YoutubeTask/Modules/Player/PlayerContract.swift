@@ -11,10 +11,12 @@ import Foundation
 protocol PlayerPresenterProtocol: AnyObject {
     func configrePlayer(model: [GetVideoPlayerStruct])
     func setViews(_ views: [String])
+    func configrePlayerWithPlaylist(model: [WithPlaylistStruct])
+
 }
 
 protocol PlayerViewPresenterProtocol: AnyObject {
     init(view:PlayerPresenterProtocol, networkManager: NetworkManager)
     func setPlayer(playlist: String)
-    func getVideoId() -> [String]
+    func getVideoId(idArray: [String]?) -> [String]
 }

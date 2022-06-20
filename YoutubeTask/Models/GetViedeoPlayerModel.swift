@@ -11,4 +11,12 @@ struct GetVideoPlayerStruct {
     var position:    Int
     var videoId:    String
     var titles:     String
+    var playlistId: String?
+}
+
+struct WithPlaylistStruct {
+    var position:    Int
+    var videoId:    String
+    var titles:     String
+    var playlistId: String?
 }

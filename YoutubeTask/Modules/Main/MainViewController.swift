@@ -124,12 +124,14 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: FirstPlaylist.identifier, for: indexPath) as! FirstPlaylist
             cell.sendId = self
+            cell.sendPosition = self
             cell.backgroundColor = .black
             return cell
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: SecondPlaylist.identifier, for: indexPath) as! SecondPlaylist
             cell.backgroundColor = .black
             cell.sendFromSecond = self
+            cell.sendPosition = self
             return cell
         default: break
         }
@@ -166,20 +168,45 @@ extension MainViewController: SendUploads {
         }
     }
 }
+extension MainViewController: SendPosition {
+    func position(_ position: Int) {
+        DispatchQueue.main.async {
+            self.playerVC.setPosition(position: position)
+        }
+    }
+}
+extension MainViewController: SendSecondPosition {
+    func sendPosition(_ position: Int) {
+        DispatchQueue.main.async {
+            self.playerVC.setPosition(position: position)
+        }
+    }
+
+}
 
 // MARK: - from first playlist
 extension MainViewController: SendFromFirstPlaylist {
     func send(playerModel: ShowPlayerModel) {
-        self.playerViewModel = playerModel
-//        playerVC.configure(playerModel: playerModel)
+        DispatchQueue.main.async {
+            
+            self.playerViewModel = playerModel
+            self.playerVC.getPlaylistId(playerModel.playlistId)
+            self.playerVC.reloadInputViews()
+            self.showPlayer()
+        }
     }
 }
 
 // MARK: - from second playlist
 extension MainViewController: SendFromSecondPlaylist {
     func sendSecond(playerModel: ShowPlayerModel) {
-        self.playerViewModel = playerModel
-//        playerVC.configure(playerModel: playerModel)
+        DispatchQueue.main.async {
+            
+            self.playerViewModel = playerModel
+            self.playerVC.getPlaylistId(playerModel.playlistId)
+            self.playerVC.reloadInputViews()
+            self.showPlayer()
+        }
     }
 }
 

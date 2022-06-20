@@ -15,9 +15,9 @@ class PlayerViewController: UIViewController {
     var presenter: PlayerViewPresenterProtocol?
     
     var playerConfiguration =   [GetVideoPlayerStruct]()
+    var witPlaylist = [WithPlaylistStruct]()
     let networkManager =        NetworkManager()
     var playerConfigureModel:   Welcome?
-
     let buttonName = ["Prev","Play","Next"]
     
     
@@ -34,7 +34,7 @@ class PlayerViewController: UIViewController {
     }
 
     
-    var position: Int!
+    var position: Int?
     var views: [String] = []
     
     let containerView: UIView = {
@@ -127,7 +127,6 @@ class PlayerViewController: UIViewController {
          super.init(nibName: nil, bundle: nil)
         self.playerModel = playerModel
         self.videoName.text = playerModel.songTitle
-        self.viewsCount.text = "\(playerModel.viewsCount) просмотра"
     }
     
     required init?(coder: NSCoder) {
@@ -180,11 +179,11 @@ class PlayerViewController: UIViewController {
     @objc func buttonPlayerActions(_ sender: UIButton) {
         switch sender.tag {
         case 0:
-            if position > 0 {
-                position -= 1
-                videoName.text = playerConfiguration[position].titles
-                playerView.load(withVideoId: playerConfiguration[position].videoId)
-                self.viewsCount.text = views[position]
+            if position! > 0 {
+                position! -= 1
+                videoName.text = playerConfiguration[position!].titles
+                playerView.load(withVideoId: playerConfiguration[position!].videoId)
+                self.viewsCount.text = views[position!]
 
             }
 
@@ -199,11 +198,11 @@ class PlayerViewController: UIViewController {
                 playerView.pauseVideo()
             }
         case 2:
-            if position < playerConfiguration.count - 1{
-                position += 1
-                self.videoName.text = playerConfiguration[position].titles
-                playerView.load(withVideoId: playerConfiguration[position].videoId)
-                self.viewsCount.text = views[position]
+            if position! < playerConfiguration.count - 1{
+                position! += 1
+                self.videoName.text = playerConfiguration[position!].titles
+                playerView.load(withVideoId: playerConfiguration[position!].videoId)
+                self.viewsCount.text = views[position!]
 
             }        default: break
         }
@@ -211,15 +210,30 @@ class PlayerViewController: UIViewController {
     
     // MARK: -  configure
     func configure(playerModel: [GetVideoPlayerStruct]) {
-        if !views.isEmpty {
-            self.viewsCount.text = self.views.first
-            self.position = playerModel.first?.position
-            self.videoName.text = playerModel.first?.titles
-            self.playerView.load(withVideoId: playerModel.first!.videoId)
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.2) {
+            self.playerConfiguration = playerModel
+            self.position = playerModel[self.position!].position
+            self.videoName.text = playerModel[self.position!].titles
+        }
+    }
+    func configureWithPlaylist(playerModel: [WithPlaylistStruct]) {
+            self.witPlaylist = playerModel
+    }
+    func setPosition(position: Int) {
+        DispatchQueue.main.async {
+            self.position = position
 
         }
+//
+//        DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+//            self.viewsCount.text = self.views[position]
+//            print(self.views[position])
+//            print(self.views)
+//
+//        }
 
     }
+
     
         // MARK: -  Actions
     @objc func imageChanger() {
@@ -285,19 +299,29 @@ class PlayerViewController: UIViewController {
 
 // MARK: - PlayerPresenterProtocol
 extension PlayerViewController: PlayerPresenterProtocol {
-    func configrePlayer(model: [GetVideoPlayerStruct]) {
-        DispatchQueue.main.asyncAfter(deadline: .now()+0.2) {
-            self.playerConfiguration = model
-            self.configure(playerModel: model)
+    func configrePlayerWithPlaylist(model: [WithPlaylistStruct]) {
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
+            self.witPlaylist = model
+            self.configrePlayerWithPlaylist(model: model)
+            self.playerView.load(withVideoId: self.playerConfiguration[self.position ?? 0].videoId)
         }
     }
     
+    func configrePlayer(model: [GetVideoPlayerStruct]) {
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
+                self.playerConfiguration = model
+                self.configure(playerModel: model)
+                self.playerView.load(withVideoId: self.playerConfiguration[self.position ?? 0].videoId)
+            }
+    }
+    
     func setViews(_ views: [String]) {
-        DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.2) {
             self.views = views
         }
     }
 }
+
     
 
 //MARK: - UIGestureRecognizerDelegate

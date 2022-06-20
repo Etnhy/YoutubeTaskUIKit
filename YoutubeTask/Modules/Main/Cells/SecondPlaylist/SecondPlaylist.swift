@@ -8,12 +8,17 @@
 import UIKit
 import SnapKit
 
+protocol SendSecondPosition: AnyObject {
+    func sendPosition(_ position: Int)
+}
+
 class SecondPlaylist: UITableViewCell {
     
     var secondModel = [SecondCellModel]()
     var secondViewsArray: [String] = []
     let network = NetworkManager()
     var presenter: SecondPlaylistViewProtocol?
+    weak var sendPosition: SendSecondPosition?
     weak var sendFromSecond: SendFromSecondPlaylist?
     
     let secondPlaylistName: UILabel = {
@@ -79,7 +84,10 @@ extension SecondPlaylist: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         cell.configure(with: secondModel[indexPath.row])
+        if !secondViewsArray.isEmpty {
             cell.setViews(views: secondViewsArray[indexPath.row])
+        }
+//        cell.setViews(views: secondViewsArray[indexPath.row])
         cell.backgroundColor = .clear
         return cell
     }
@@ -92,7 +100,10 @@ extension SecondPlaylist: UICollectionViewDataSource {
         let playlistId = secondModel[indexPath.row].playlistId
         let viewss = secondViewsArray[indexPath.row]
         let playerModel = ShowPlayerModel(songTitle: name, viewsCount: viewss, playlistId: playlistId!, loadLink: linkLoad)
+        self.sendPosition?.sendPosition(indexPath.row)
+        
         self.sendFromSecond?.sendSecond(playerModel: playerModel)
+        print(viewss)
 
     }
     
@@ -109,8 +120,9 @@ extension SecondPlaylist: SecondPlaylistProtocol {
     }
     
     func setSecondViews(count views: [String]) {
-        DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
-            self.secondViewsArray = views
+        self.secondViewsArray = views
+
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.11) {
             self.secondPlaylistCollectionView.reloadData()
         }
     }
