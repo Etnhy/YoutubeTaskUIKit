@@ -144,7 +144,6 @@ extension HeaderTableView: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CarouselCollectionViewCell.identifier, for: indexPath) as? CarouselCollectionViewCell else {
             return UICollectionViewCell()
         }
-        cell.playButton.addGradient(colors: [.buttonGradientStart(), .buttonGradientEnd()])
 
         cell.configure(with: headerModel[indexPath.row])
         cell.backgroundColor = .clear

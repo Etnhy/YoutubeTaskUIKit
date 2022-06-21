@@ -13,7 +13,7 @@ class CarouselCollectionViewCell: UICollectionViewCell {
     static let identifier = "CarouselCollectionViewCell"
     
     var uploads: String = ""
-    
+    var buttonHeight:CGFloat = 70
     let bannerImage: UIImageView = {
        var img = UIImageView()
         img.backgroundColor = .orange
@@ -43,20 +43,16 @@ class CarouselCollectionViewCell: UICollectionViewCell {
         var configuration = UIButton.Configuration.plain()
         configuration.image = UIImage(named: "Play")
         configuration.cornerStyle = .capsule
-        
-//        configuration.background.backgroundColor = .purple
-        
         button.configuration = configuration
-//        button.addGradient()
-        button.backgroundColor = .systemPink
         button.clipsToBounds = true
+        button.layer.cornerRadius = 35
+        button.backgroundColor = .purple
         return button
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        playButton.addGradient(colors: [.buttonGradientStart(), .buttonGradientEnd()])
-
+        playButton.layer.cornerRadius = buttonHeight / 2
         addSubviews()
     }
     
@@ -101,7 +97,7 @@ class CarouselCollectionViewCell: UICollectionViewCell {
         playButton.snp.makeConstraints { make in
             make.top.equalTo(self).offset(18)
             make.leading.equalTo(self).offset(16)
-            make.size.equalTo(CGSize(width: 70, height: 70))
+            make.size.equalTo(CGSize(width: buttonHeight, height: buttonHeight))
         }
     }
 }

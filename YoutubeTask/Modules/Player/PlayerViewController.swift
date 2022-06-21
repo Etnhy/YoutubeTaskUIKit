@@ -321,8 +321,6 @@ extension PlayerViewController: PlayerPresenterProtocol {
     }
 }
 
-    
-
 //MARK: - UIGestureRecognizerDelegate
 extension PlayerViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
