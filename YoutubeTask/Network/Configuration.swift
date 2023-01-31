@@ -29,8 +29,8 @@ struct Configuration {
     
     // MARK: -  Playlists id
     struct Playlists {
-        static let first    : String = "PLNZta_SFvNjFecxGDwyektG2-3LdgnhbD"
-        static let second   : String = "PLNZta_SFvNjHIXf0uM13UjnLcZov8WWOb"
+        static let first    : String = "PLNZta_SFvNjG77796kznV5vUBqxZxSNZg"
+        static let second   : String = "PLNZta_SFvNjES8JspnOD2PIYV9X9CetcG"
     }
     
     // MARK: - Channels id
